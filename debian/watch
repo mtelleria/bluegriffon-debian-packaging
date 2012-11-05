@@ -1,0 +1,3 @@
+version=3
+http://sources.disruptive-innovations.com/bluegriffon/tags/ \
+    (?:.*/)?(\d[\d\.]+)/?

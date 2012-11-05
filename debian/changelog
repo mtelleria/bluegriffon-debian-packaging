@@ -1,0 +1,12 @@
+bluegriffon (1.1.1-1~getdeb1.1) UNRELEASED; urgency=low
+
+  * Non-maintainer upload.
+  * rebuild for wheezy
+
+ -- Miguel Telleria de Esteban <miguel@mtelleria.com>  Mon, 15 Oct 2012 17:59:17 +0200
+
+bluegriffon (1.1.1-1~getdeb1) lucid; urgency=low
+
+  * Initial release (LP: #820730)
+
+ -- Christoph Korn <christoph.korn@getdeb.net>  Thu, 04 Aug 2011 12:47:03 +0200

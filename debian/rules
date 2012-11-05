@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_clean:
+	rm -rf bluegriffon
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
+	cd mozilla-2.0 && $(MAKE) -f client.mk build_all
+
+override_dh_auto_install:
+	mkdir -p debian/bluegriffon-data/usr/share/bluegriffon
+	mkdir -p debian/bluegriffon/usr/lib/bluegriffon
+
+	chmod -x bluegriffon/dist/bin/components/NetworkGeolocationProvider.js
+
+	cp -RL bluegriffon/dist/bin/components debian/bluegriffon-data/usr/share/bluegriffon/
+	cp -RL bluegriffon/dist/bin/defaults debian/bluegriffon-data/usr/share/bluegriffon/
+	cp -RL bluegriffon/dist/bin/dictionaries debian/bluegriffon-data/usr/share/bluegriffon/
+	cp -RL bluegriffon/dist/bin/icons debian/bluegriffon-data/usr/share/bluegriffon/
+	cp -RL bluegriffon/dist/bin/modules debian/bluegriffon-data/usr/share/bluegriffon/
+	cp -RL bluegriffon/dist/bin/res debian/bluegriffon-data/usr/share/bluegriffon/
+	cp -RL bluegriffon/dist/bin/greprefs.js debian/bluegriffon-data/usr/share/bluegriffon/
+	cp -RL bluegriffon/dist/bin/platform.ini debian/bluegriffon-data/usr/share/bluegriffon/
+
+	cp -RL bluegriffon/dist/bin/*.so debian/bluegriffon/usr/lib/bluegriffon/
+	cp -RL bluegriffon/dist/bin/js debian/bluegriffon/usr/lib/bluegriffon/
+	cp -RL bluegriffon/dist/bin/mozilla-xremote-client debian/bluegriffon/usr/lib/bluegriffon/
+	cp -RL bluegriffon/dist/bin/nsinstall debian/bluegriffon/usr/lib/bluegriffon/
+	cp -RL bluegriffon/dist/bin/updater debian/bluegriffon/usr/lib/bluegriffon/
+	cp -RL bluegriffon/dist/bin/xpt_dump debian/bluegriffon/usr/lib/bluegriffon/
+	cp -RL bluegriffon/dist/bin/xpt_link debian/bluegriffon/usr/lib/bluegriffon/
+
+	mv debian/bluegriffon-data/usr/share/bluegriffon/components/*.so debian/bluegriffon/usr/lib/bluegriffon/
+
+override_dh_shlibdeps:
+	dh_shlibdeps -l$(CURDIR)/debian/bluegriffon/usr/lib/bluegriffon

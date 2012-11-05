@@ -1,0 +1,53 @@
+Just typos.
+Index: bluegriffon-1.1.1/mozilla-2.0/db/sqlite3/src/sqlite3.c
+===================================================================
+--- bluegriffon-1.1.1.orig/mozilla-2.0/db/sqlite3/src/sqlite3.c	2011-08-04 16:28:09.534133275 +0200
++++ bluegriffon-1.1.1/mozilla-2.0/db/sqlite3/src/sqlite3.c	2011-08-04 16:28:39.834133286 +0200
+@@ -357,7 +357,7 @@
+ ** The SQLITE_THREADSAFE macro must be defined as 0, 1, or 2.
+ ** 0 means mutexes are permanently disable and the library is never
+ ** threadsafe.  1 means the library is serialized which is the highest
+-** level of threadsafety.  2 means the libary is multithreaded - multiple
++** level of threadsafety.  2 means the library is multithreaded - multiple
+ ** threads can use SQLite as long as no two threads try to use the same
+ ** database connection at the same time.
+ **
+Index: bluegriffon-1.1.1/mozilla-2.0/gfx/angle/src/compiler/InfoSink.cpp
+===================================================================
+--- bluegriffon-1.1.1.orig/mozilla-2.0/gfx/angle/src/compiler/InfoSink.cpp	2011-08-04 16:31:48.554133350 +0200
++++ bluegriffon-1.1.1/mozilla-2.0/gfx/angle/src/compiler/InfoSink.cpp	2011-08-04 16:32:10.074133356 +0200
+@@ -26,7 +26,7 @@
+             sink.append("NOTE: ");
+             break;
+         default:
+-            sink.append("UNKOWN ERROR: ");
++            sink.append("UNKNOWN ERROR: ");
+             break;
+     }
+ }
+Index: bluegriffon-1.1.1/mozilla-2.0/gfx/thebes/GLContextProviderOSMesa.cpp
+===================================================================
+--- bluegriffon-1.1.1.orig/mozilla-2.0/gfx/thebes/GLContextProviderOSMesa.cpp	2011-08-04 16:29:07.304133294 +0200
++++ bluegriffon-1.1.1/mozilla-2.0/gfx/thebes/GLContextProviderOSMesa.cpp	2011-08-04 16:29:52.544133309 +0200
+@@ -144,7 +144,7 @@
+     };
+ 
+     if (!LibrarySymbolLoader::LoadSymbols(mOSMesaLibrary, &symbols[0])) {
+-        LogMessage("Couldn't find required entry points in OSMesa libary");
++        LogMessage("Couldn't find required entry points in OSMesa library");
+         return PR_FALSE;
+     }
+ 
+Index: bluegriffon-1.1.1/mozilla-2.0/modules/freetype2/vms_make.com
+===================================================================
+--- bluegriffon-1.1.1.orig/mozilla-2.0/modules/freetype2/vms_make.com	2011-08-04 16:30:04.334133313 +0200
++++ bluegriffon-1.1.1/mozilla-2.0/modules/freetype2/vms_make.com	2011-08-04 16:30:27.904133321 +0200
+@@ -1096,7 +1096,7 @@
+ !
+ ZLIB # sys$library:libz.olb # sys$library: # zlib.h # FT_CONFIG_OPTION_SYSTEM_ZLIB
+ $   write sys$output "New driver file vmslib.dat created."
+-$   write sys$output "Please customize libary locations for your site"
++$   write sys$output "Please customize library locations for your site"
+ $   write sys$output "and afterwards re-execute ''myproc'"
+ $   goto err_exit
+ $ endif
