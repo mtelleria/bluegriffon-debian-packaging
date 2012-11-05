@@ -1,7 +1,7 @@
 Source: bluegriffon
 Section: web
 Priority: optional
-Maintainer: Christoph Korn <christoph.korn@getdeb.net>
+Maintainer: Miguel Telleria de Esteban <miguel@mtelleria.com>
 Build-Depends: debhelper (>= 7.0.50~), zip, yasm,
  pkg-config, libgtk2.0-dev, libglib2.0-dev,
  libgnomevfs2-dev, libgconf2-dev, libnotify-dev,
