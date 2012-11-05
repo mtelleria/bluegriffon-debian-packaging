@@ -1,0 +1,4 @@
+<!ENTITY window.title "소프트웨어 업데이트">
+
+<!ENTITY warningMessage.description "BlueGriffon 업데이트가 가능합니다.">
+<!ENTITY download.button "업데이트 다운로드">

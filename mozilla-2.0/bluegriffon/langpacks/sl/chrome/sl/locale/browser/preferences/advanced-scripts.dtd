@@ -1,0 +1,18 @@
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - ***** END LICENSE BLOCK ***** -->
+
+<!ENTITY advancedJSDialog.title "Napredne nastavitve JavaScript">
+<!ENTITY window.width "39em">
+
+<!ENTITY allowScripts.label "Dovoli, da skripta:">
+
+<!ENTITY moveResizeWindows.label "premikajo ali večajo oz. manjšajo okna">
+<!ENTITY moveResizeWindows.accesskey "P">
+<!ENTITY raiseLowerWindows.label "dvignejo ali spustijo okna">
+<!ENTITY raiseLowerWindows.accesskey "D">
+<!ENTITY disableContextMenus.label "onemogočijo ali zamenjajo vsebinske menije">
+<!ENTITY disableContextMenus.accesskey "O">
+
+<!ENTITY moveResizePopupWindows.accesskey "M">
+
+<!ENTITY moveResizePopupWindows.label     "Move or resize popup windows">

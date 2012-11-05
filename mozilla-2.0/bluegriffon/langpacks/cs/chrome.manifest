@@ -1,0 +1,31 @@
+locale browser-region cs chrome/cs/locale/browser-region/
+locale pippki cs chrome/cs/locale/cs/pippki/
+locale branding cs chrome/cs/locale/branding/
+locale autoconfig cs chrome/cs/locale/cs/autoconfig/
+locale places cs chrome/cs/locale/cs/places/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale passwordmgr cs chrome/cs/locale/cs/passwordmgr/
+locale necko cs chrome/cs/locale/cs/necko/
+locale global-region cs chrome/cs/locale/cs/global-region/
+locale weave cs chrome/cs/locale/cs/
+locale cookie cs chrome/cs/locale/cs/cookie/
+locale global-platform cs chrome/cs/locale/cs/global-platform/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale alerts cs chrome/cs/locale/cs/alerts/
+locale mozapps cs chrome/cs/locale/cs/mozapps/
+locale global cs chrome/cs/locale/cs/global/
+locale browser cs chrome/cs/locale/browser/
+locale pipnss cs chrome/cs/locale/cs/pipnss/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale webapprt cs chrome/cs/locale/webapprt/
+locale testpilot cs chrome/cs/locale/feedback/
+locale bluegriffon cs base/locale/bluegriffon/
+locale branding cs base/locale/branding/
+locale fs cs extensions/fs/
+locale gfd cs extensions/gfd/
+locale cssproperties cs sidebars/cssproperties/
+locale domexplorer cs sidebars/domexplorer/
+locale scripteditor cs sidebars/scripteditor/
+locale stylesheets cs sidebars/stylesheets/
+locale tipoftheday cs extensions/tipoftheday/
+

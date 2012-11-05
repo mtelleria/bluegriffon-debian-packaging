@@ -1,0 +1,31 @@
+locale pippki sr chrome/sr/locale/sr/pippki/
+locale global sr chrome/sr/locale/sr/global/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale autoconfig sr chrome/sr/locale/sr/autoconfig/
+locale weave sr chrome/sr/locale/sr/
+locale pipnss sr chrome/sr/locale/sr/pipnss/
+locale global-platform sr chrome/sr/locale/sr/global-platform/
+locale browser sr chrome/sr/locale/browser/
+locale browser-region sr chrome/sr/locale/browser-region/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale testpilot sr chrome/sr/locale/feedback/
+locale global-region sr chrome/sr/locale/sr/global-region/
+locale webapprt sr chrome/sr/locale/webapprt/
+locale mozapps sr chrome/sr/locale/sr/mozapps/
+locale cookie sr chrome/sr/locale/sr/cookie/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale places sr chrome/sr/locale/sr/places/
+locale passwordmgr sr chrome/sr/locale/sr/passwordmgr/
+locale branding sr chrome/sr/locale/branding/
+locale alerts sr chrome/sr/locale/sr/alerts/
+locale necko sr chrome/sr/locale/sr/necko/
+locale bluegriffon sr base/locale/bluegriffon/
+locale branding sr base/locale/branding/
+locale fs sr extensions/fs/
+locale gfd sr extensions/gfd/
+locale cssproperties sr sidebars/cssproperties/
+locale domexplorer sr sidebars/domexplorer/
+locale scripteditor sr sidebars/scripteditor/
+locale stylesheets sr sidebars/stylesheets/
+locale tipoftheday sr extensions/tipoftheday/
+

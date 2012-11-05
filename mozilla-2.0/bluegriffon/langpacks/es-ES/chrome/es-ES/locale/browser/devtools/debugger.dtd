@@ -1,0 +1,18 @@
+<!ENTITY debuggerMenu.label "Depurador de scripts">
+<!ENTITY debuggerMenu.commandkey "S">
+<!ENTITY debuggerUI.closeButton "Cerrar">
+<!ENTITY debuggerUI.stepOverButton "Saltar">
+<!ENTITY debuggerUI.stepInButton "Entrar">
+<!ENTITY debuggerUI.stepOutButton "Salir">
+<!ENTITY debuggerUI.stackTitle "Pila de llamadas">
+<!ENTITY debuggerUI.scriptTitle "Script">
+<!ENTITY debuggerUI.propertiesTitle "Ámbito de las variables">
+
+
+<!-- LOCALIZATION NOTE (debuggerUI.emptyFilterText): This is the text that
+  -  appears in the filter text box when it is empty. -->
+<!ENTITY debuggerUI.emptyFilterText  "Filter scripts">
+
+<!-- LOCALIZATION NOTE (remoteDebuggerMenu.label): This is the label for the
+  -  application menu item that opens the remote debugger UI. -->
+<!ENTITY remoteDebuggerMenu.label    "Remote Debugger">

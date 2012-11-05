@@ -1,0 +1,42 @@
+<!ENTITY startup.label "Zagon">
+
+<!ENTITY startupPage.label "Ko se &brandShortName; zažene:">
+<!ENTITY startupPage.accesskey "k">
+<!ENTITY startupHomePage.label "prikaži mojo domačo stran">
+<!ENTITY startupBlankPage.label "prikaži prazno stran">
+<!ENTITY startupLastSession.label "prikaži nazadnje odprta okna in zavihke">
+<!ENTITY homepage.label "Domača stran:">
+<!ENTITY homepage.accesskey "D">
+<!ENTITY useCurrentPage.label "Uporabi trenutno stran">
+<!ENTITY useCurrentPage.accesskey "T">
+<!ENTITY useMultiple.label "Uporabi trenutne strani">
+<!ENTITY useBookmark.label "Uporabi zaznamek">
+<!ENTITY useBookmark.accesskey "z">
+<!ENTITY restoreDefault.label "Uporabi privzeto stran">
+<!ENTITY restoreDefault.accesskey "i">
+
+<!ENTITY downloads.label "Prenosi">
+
+<!ENTITY showWhenDownloading.label "Med prenašanjem prikaži okno s prenosi">
+<!ENTITY showWhenDownloading.accesskey "o">
+<!ENTITY closeWhenDone.label "in ga zapri, ko so vsi prenosi končani">
+<!ENTITY closeWhenDone.accesskey "a">
+<!ENTITY saveTo.label "Shrani datoteke v">
+<!ENTITY saveTo.accesskey "S">
+<!ENTITY chooseFolderWin.label "Prebrskaj ...">
+<!ENTITY chooseFolderWin.accesskey "b">
+<!ENTITY chooseFolderMac.label "Izberi ...">
+<!ENTITY chooseFolderMac.accesskey "b">
+<!ENTITY alwaysAsk.label "Pri vsakem prenosu vprašaj, kam želim shraniti datoteko">
+<!ENTITY alwaysAsk.accesskey "V">
+
+<!ENTITY addonsMgr.label "Razširitve in teme">
+<!ENTITY manageAddonsDescWin.label "Spremeni nastavitve razširitev in tem">
+<!ENTITY manageAddonsDescUnix2.label "Spremeni nastavitve razširitev in tem">
+<!ENTITY manageAddons.label "Razširitve in teme ...">
+<!ENTITY manageAddons.accesskey "R">
+
+<!ENTITY chooseBookmark.accesskey  "B">
+<!ENTITY chooseBookmark.label      "Use Bookmark…">
+<!ENTITY restoreOnDemand.accesskey "l">
+<!ENTITY restoreOnDemand.label     "Don’t load tabs until selected">

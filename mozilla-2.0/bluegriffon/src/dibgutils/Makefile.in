@@ -1,0 +1,29 @@
+# ***** BEGIN LICENSE BLOCK *****
+#
+# FloatingProperties for Nvu.
+#
+# (c) Copyright Disruptive Innovations SARL 2005
+# All Rights Reserved.
+#
+# ***** END LICENSE BLOCK *****
+
+
+DEPTH   = ../../..
+topsrcdir = @top_srcdir@
+srcdir    = @srcdir@
+VPATH   = @srcdir@
+
+include $(DEPTH)/config/autoconf.mk
+
+XPIDL_MODULE = dibgutils
+
+XPIDLSRCS   = diITextNodeChangedTxn.idl \
+							diIAttrChangedTxn.idl \
+							diIAttrNameChangedTxn.idl \
+							diINodeInsertionTxn.idl \
+							diIInnerHtmlChangedTxn.idl \
+							diIStyleAttrChangeTxn.idl \
+							diIChangeFileStylesheetTxn.idl \
+							$(NULL)
+
+include $(topsrcdir)/config/rules.mk

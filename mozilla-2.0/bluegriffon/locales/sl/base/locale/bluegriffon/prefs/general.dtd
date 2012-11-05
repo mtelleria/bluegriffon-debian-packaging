@@ -1,0 +1,21 @@
+<!ENTITY fileHistory.caption "Nedavne datoteke">
+<!ENTITY fileHistoryDepth.label "Največje število datotek v novejši zgodovini:">
+<!ENTITY files.label "datoteke">
+<!ENTITY restoreLastSession.label "Obnovi zavihke zadnje seje">
+
+<!ENTITY structureBar.caption "strukturna vrstica ">
+
+
+<!ENTITY showIDs.label "Prikaz ID">
+<!ENTITY showClasses.label "Prikaz razredov">
+<!ENTITY showLanguage.label "prikaz jezika">
+<!ENTITY showRoles.label "Prikaz vloge ARIA">
+
+<!ENTITY spellCheck.caption "črkovanje ">
+<!ENTITY enableSpellCheck.label "Omogoči sprotno črkovanje ">
+<!ENTITY numberSuggestions.label "Število predlogov:">
+
+<!ENTITY tabPosition.label "Mesto zavihkov">
+<!ENTITY leftTabPosition.label "Levo">
+<!ENTITY centerTabPosition.label "Sredina">
+<!ENTITY rightTabPosition.label "Desno">

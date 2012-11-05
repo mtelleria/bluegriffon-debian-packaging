@@ -1,0 +1,20 @@
+<!ENTITY fileHistory.caption      "Ostatnio otwierane pliki">
+<!ENTITY fileHistoryDepth.label   "Maksymalna liczba plików przetrzymywanych w historii:">
+<!ENTITY files.label              "plików">
+<!ENTITY restoreLastSession.label "Przywracaj karty z poprzedniej sesji">
+
+<!ENTITY structureBar.caption     "Pasek struktury">
+<!ENTITY showIDs.label            "Wyświetlaj ID">
+<!ENTITY showClasses.label        "Wyświetlaj klasy">
+<!ENTITY showLanguage.label       "Wyświetlaj język">
+<!ENTITY showRoles.label          "Wyświetlaj role ARIA">
+
+
+<!ENTITY spellCheck.caption       "Sprawdzanie pisowni">
+<!ENTITY enableSpellCheck.label   "Sprawdzaj pisownię w trakcie pisania">
+<!ENTITY numberSuggestions.label  "Liczba sugestii:">
+
+<!ENTITY tabPosition.label        "Położenie kart">
+<!ENTITY leftTabPosition.label    "Po lewej">
+<!ENTITY centerTabPosition.label  "Na środku">
+<!ENTITY rightTabPosition.label   "Po prawej">

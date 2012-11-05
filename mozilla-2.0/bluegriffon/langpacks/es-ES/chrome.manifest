@@ -1,0 +1,31 @@
+locale autoconfig es-ES chrome/es-ES/locale/es-ES/autoconfig/
+locale places es-ES chrome/es-ES/locale/es-ES/places/
+locale browser es-ES chrome/es-ES/locale/browser/
+locale testpilot es-ES chrome/es-ES/locale/feedback/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale necko es-ES chrome/es-ES/locale/es-ES/necko/
+locale weave es-ES chrome/es-ES/locale/es-ES/
+locale branding es-ES chrome/es-ES/locale/branding/
+locale webapprt es-ES chrome/es-ES/locale/webapprt/
+locale pippki es-ES chrome/es-ES/locale/es-ES/pippki/
+locale global-region es-ES chrome/es-ES/locale/es-ES/global-region/
+locale mozapps es-ES chrome/es-ES/locale/es-ES/mozapps/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale global-platform es-ES chrome/es-ES/locale/es-ES/global-platform/
+locale passwordmgr es-ES chrome/es-ES/locale/es-ES/passwordmgr/
+locale pipnss es-ES chrome/es-ES/locale/es-ES/pipnss/
+locale cookie es-ES chrome/es-ES/locale/es-ES/cookie/
+locale alerts es-ES chrome/es-ES/locale/es-ES/alerts/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale global es-ES chrome/es-ES/locale/es-ES/global/
+locale browser-region es-ES chrome/es-ES/locale/browser-region/
+locale bluegriffon es-ES base/locale/bluegriffon/
+locale branding es-ES base/locale/branding/
+locale fs es-ES extensions/fs/
+locale gfd es-ES extensions/gfd/
+locale cssproperties es-ES sidebars/cssproperties/
+locale domexplorer es-ES sidebars/domexplorer/
+locale scripteditor es-ES sidebars/scripteditor/
+locale stylesheets es-ES sidebars/stylesheets/
+locale tipoftheday es-ES extensions/tipoftheday/
+

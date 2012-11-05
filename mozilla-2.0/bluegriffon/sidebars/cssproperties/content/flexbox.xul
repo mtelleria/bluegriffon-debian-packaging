@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay [
+  <!ENTITY % csspropertiesDTD SYSTEM "chrome://cssproperties/locale/cssproperties.dtd">
+  %csspropertiesDTD;
+  <!ENTITY % backgrounditemDTD SYSTEM "chrome://cssproperties/locale/backgrounditem.dtd" >
+  %backgrounditemDTD;
+]>
+
+<overlay id="flexboxOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript"  src="chrome://cssproperties/content/flexbox.js" />
+
+  <vbox id="propertiesBox">
+      <hbox align="center"
+            class="csspropertiesHeader"
+            context="sectionHeaderContext"
+            id="flexboxSectionHeader"
+            onclick="ToggleSection(event, this)"
+            position="19">
+        <image />
+        <label value="&flexboxSectionHeader.label;"/>
+      </hbox>
+
+      <vbox class="section" id="flexboxSection" position="20">
+        <checkbox label="&enableFlexBox.label;" animatable="false"
+                  id="flexBoxEnabledCheckbox"
+                  oncommand="ToggleFlexBox()"/>
+        <checkbox label="&inlineBox.label;" class="indent" animatable="false"
+                  id="inlineBoxCheckbox"
+                  oncommand="ToggleFlexBox()"/>
+        <grid>
+          <columns><column/><column/></columns>
+          <rows>
+            <row align="center" animatable="false">
+              <label value="&boxAlign.label;"/>
+              <hbox align="center">
+                <toolbarbutton class="multibutton" label="&startBoxAlign.label;" value="start" property="-moz-box-align" type="checkbox"
+                               id="startBoxAlignButton" group="-moz-box-align"
+                               oncommand="ToggleProperty(this)"/>
+                <toolbarbutton class="multibutton" label="&centerBoxAlign.label;" value="center" property="-moz-box-align" type="checkbox"
+                               id="centerBoxAlignButton" group="-moz-box-align"
+                               oncommand="ToggleProperty(this)"/>
+                <toolbarbutton class="multibutton" label="&endBoxAlign.label;" value="end" property="-moz-box-align" type="checkbox"
+                               id="endBoxAlignButton" group="-moz-box-align"
+                               oncommand="ToggleProperty(this)"/>
+              </hbox>
+              <hbox>
+                <toolbarbutton class="multibutton" label="&baselineBoxAlign.label;" value="baseline" property="-moz-box-align" type="checkbox"
+                               id="baselineBoxAlignButton" group="-moz-box-align"
+                               oncommand="ToggleProperty(this)"/>
+              </hbox>
+              <hbox>
+                <toolbarbutton class="multibutton" label="&stretchBoxAlign.label;" value="stretch" property="-moz-box-align" type="checkbox"
+                               id="stretchBoxAlignButton" group="-moz-box-align"
+                               oncommand="ToggleProperty(this)"/>
+              </hbox>
+            </row>
+
+            <row align="center" animatable="false">
+              <label value="&boxDirection.label;"/>
+              <hbox align="center">
+                <toolbarbutton class="multibutton" label="&normalBoxDirection.label;" value="normal" property="-moz-box-direction" type="checkbox"
+                               id="normalBoxDirectionButton" group="-moz-box-direction"
+                               oncommand="ToggleProperty(this)"/>
+                <toolbarbutton class="multibutton" label="&reverseBoxDirection.label;" value="reverse" property="-moz-box-direction" type="checkbox"
+                               id="reverseBoxDirectionButton" group="-moz-box-direction"
+                               oncommand="ToggleProperty(this)"/>
+              </hbox>
+            </row>
+
+            <row align="center" animatable="false">
+              <label value="&boxOrientation.label;"/>
+              <hbox align="center">
+                <toolbarbutton class="multibutton" label="&horizontalBoxOrientation.label;" value="horizontal" property="-moz-box-orient" type="checkbox"
+                               id="horizontalBoxOrientButton" group="-moz-box-orient"
+                               oncommand="ToggleProperty(this)"/>
+                <toolbarbutton class="multibutton" label="&verticalBoxOrientation.label;" value="vertical" property="-moz-box-orient" type="checkbox"
+                               id="verticalBoxOrientButton" group="-moz-box-orient"
+                               oncommand="ToggleProperty(this)"/>
+              </hbox>
+            </row>
+
+            <row align="center">
+              <label value="&boxFlex.label;"/>
+              <hbox>
+                <textbox id="boxFlexTextbox" type="number" min="0" decimalplaces="2"
+                         property="-moz-box-flex"
+                         oninput="ToggleProperty(this)"
+                         oncommand="ToggleProperty(this)"/>
+              </hbox>
+            </row>
+
+            <row align="center" animatable="false">
+              <label value="&boxOrdinalGroup.label;"/>
+              <hbox>
+                <textbox id="boxOrdinalGroupTextbox" type="number" min="0"
+                         property="-moz-box-ordinal-group"
+                         oninput="ToggleProperty(this)"
+                         oncommand="ToggleProperty(this)"/>
+              </hbox>
+            </row>
+
+            <row align="center" animatable="false">
+              <label value="&boxPack.label;"/>
+              <hbox align="center">
+                <toolbarbutton class="multibutton" label="&startBoxPack.label;" value="start" property="-moz-box-pack" type="checkbox"
+                               id="startBoxPackButton" group="-moz-box-pack"
+                               oncommand="ToggleProperty(this)"/>
+                <toolbarbutton class="multibutton" label="&centerBoxPack.label;" value="center" property="-moz-box-pack" type="checkbox"
+                               id="centerBoxPackButton" group="-moz-box-pack"
+                               oncommand="ToggleProperty(this)"/>
+                <toolbarbutton class="multibutton" label="&endBoxPack.label;" value="end" property="-moz-box-pack" type="checkbox"
+                               id="endBoxPackButton" group="-moz-box-pack"
+                               oncommand="ToggleProperty(this)"/>
+              </hbox>
+              <hbox>
+                <toolbarbutton class="multibutton" label="&justifyBoxPack.label;" value="justify" property="-moz-box-pack" type="checkbox"
+                               id="justifyBoxPackButton" group="-moz-box-pack"
+                               oncommand="ToggleProperty(this)"/>
+              </hbox>
+            </row>
+          </rows>
+        </grid>
+      </vbox>
+  </vbox>
+</overlay>

@@ -1,0 +1,31 @@
+locale necko fi chrome/fi/locale/fi/necko/
+locale global fi chrome/fi/locale/fi/global/
+locale mozapps fi chrome/fi/locale/fi/mozapps/
+locale testpilot fi chrome/fi/locale/feedback/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale browser-region fi chrome/fi/locale/browser-region/
+locale cookie fi chrome/fi/locale/fi/cookie/
+locale passwordmgr fi chrome/fi/locale/fi/passwordmgr/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale browser fi chrome/fi/locale/browser/
+locale weave fi chrome/fi/locale/fi/
+locale pippki fi chrome/fi/locale/fi/pippki/
+locale global-region fi chrome/fi/locale/fi/global-region/
+locale alerts fi chrome/fi/locale/fi/alerts/
+locale global-platform fi chrome/fi/locale/fi/global-platform/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale branding fi chrome/fi/locale/branding/
+locale places fi chrome/fi/locale/fi/places/
+locale autoconfig fi chrome/fi/locale/fi/autoconfig/
+locale webapprt fi chrome/fi/locale/webapprt/
+locale pipnss fi chrome/fi/locale/fi/pipnss/
+locale bluegriffon fi base/locale/bluegriffon/
+locale branding fi base/locale/branding/
+locale fs fi extensions/fs/
+locale gfd fi extensions/gfd/
+locale cssproperties fi sidebars/cssproperties/
+locale domexplorer fi sidebars/domexplorer/
+locale scripteditor fi sidebars/scripteditor/
+locale stylesheets fi sidebars/stylesheets/
+locale tipoftheday fi extensions/tipoftheday/
+

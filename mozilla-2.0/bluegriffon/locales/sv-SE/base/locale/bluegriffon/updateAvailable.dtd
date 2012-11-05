@@ -1,0 +1,4 @@
+<!ENTITY window.title "Programuppdateringar">
+
+<!ENTITY warningMessage.description "En programuppdatering för BlueGriffon är tillgänglig.">
+<!ENTITY download.button "Ladda ned uppdatering">

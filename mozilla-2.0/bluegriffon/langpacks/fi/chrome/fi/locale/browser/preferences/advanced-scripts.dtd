@@ -1,0 +1,18 @@
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - ***** END LICENSE BLOCK ***** -->
+
+<!ENTITY advancedJSDialog.title         "Lisäasetukset JavaScriptille">
+<!ENTITY window.width                   "37em">
+
+<!ENTITY allowScripts.label             "Komentosarjat voivat:">
+
+<!ENTITY moveResizeWindows.label        "Siirtää ikkunoita tai muuttaa niiden kokoa">
+<!ENTITY moveResizeWindows.accesskey    "S">
+<!ENTITY raiseLowerWindows.label        "Nostaa tai laskea ikkunoita">
+<!ENTITY raiseLowerWindows.accesskey    "N">
+<!ENTITY disableContextMenus.label      "Poistaa tai muuttaa ponnahdusvalikkoja">
+<!ENTITY disableContextMenus.accesskey  "P">
+
+<!ENTITY moveResizePopupWindows.accesskey "M">
+
+<!ENTITY moveResizePopupWindows.label     "Move or resize popup windows">

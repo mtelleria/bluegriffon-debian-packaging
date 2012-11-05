@@ -1,0 +1,31 @@
+locale testpilot ja chrome/ja/locale/feedback/
+locale browser ja chrome/ja/locale/browser/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale pipnss ja chrome/ja/locale/ja/pipnss/
+locale places ja chrome/ja/locale/ja/places/
+locale autoconfig ja chrome/ja/locale/ja/autoconfig/
+locale alerts ja chrome/ja/locale/ja/alerts/
+locale browser-region ja chrome/ja/locale/browser-region/
+locale cookie ja chrome/ja/locale/ja/cookie/
+locale global-platform ja chrome/ja/locale/ja/global-platform/
+locale weave ja chrome/ja/locale/ja/
+locale webapprt ja chrome/ja/locale/webapprt/
+locale global ja chrome/ja/locale/ja/global/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale necko ja chrome/ja/locale/ja/necko/
+locale global-region ja chrome/ja/locale/ja/global-region/
+locale mozapps ja chrome/ja/locale/ja/mozapps/
+locale pippki ja chrome/ja/locale/ja/pippki/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale branding ja chrome/ja/locale/branding/
+locale passwordmgr ja chrome/ja/locale/ja/passwordmgr/
+locale bluegriffon ja base/locale/bluegriffon/
+locale branding ja base/locale/branding/
+locale fs ja extensions/fs/
+locale gfd ja extensions/gfd/
+locale cssproperties ja sidebars/cssproperties/
+locale domexplorer ja sidebars/domexplorer/
+locale scripteditor ja sidebars/scripteditor/
+locale stylesheets ja sidebars/stylesheets/
+locale tipoftheday ja extensions/tipoftheday/
+

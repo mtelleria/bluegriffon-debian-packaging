@@ -1,0 +1,19 @@
+<!ENTITY window.title "リンク">
+
+<!ENTITY linkText.label "文字列">
+<!ENTITY linkTarget.label "対象">
+<!ENTITY selectFile.label "ファイルを選択">
+
+<!ENTITY isMail.label "これはメールアドレスです">
+<!ENTITY relativeUrl.label "URL をページに対して相対にする">
+
+<!ENTITY windowTarget.label "Window target">
+<!ENTITY openIn.label "Open the link in:">
+<!ENTITY topTarget.label "same window, without frames">
+<!ENTITY blankTarget.label "a new window">
+<!ENTITY parentTarget.label "the parent frame">
+<!ENTITY selfTarget.label "the current frame">
+<!ENTITY otherTarget.label "the frame named...">
+
+<!ENTITY title.caption "Advisory Title">
+<!ENTITY title.label "Title:">

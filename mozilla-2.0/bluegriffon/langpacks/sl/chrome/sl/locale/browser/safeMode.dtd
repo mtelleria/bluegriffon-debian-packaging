@@ -1,0 +1,30 @@
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - ***** END LICENSE BLOCK ***** -->
+
+<!ENTITY safeModeDialog.title "Varni način &brandShortName;">
+<!ENTITY window.width "39em">
+
+<!ENTITY safeModeDescription.label "&brandShortName; teče v varnem načinu, kar začasno onemogoči vaše nastavitve, teme in razširitve.">
+<!ENTITY safeModeDescription2.label "Spodaj označite, če želite, da bodo naslednje spremembe dokončne:">
+
+<!ENTITY disableAddons.label "onemogoči teme in razširitve">
+<!ENTITY disableAddons.accesskey "O">
+
+<!ENTITY resetToolbars.label "ponastavi orodne vrstice">
+<!ENTITY resetToolbars.accesskey "P">
+
+<!ENTITY deleteBookmarks.label        "Zbriši vse zaznamke, razen varnostnih kopij">
+<!ENTITY deleteBookmarks.accesskey    "v">
+
+<!ENTITY resetUserPrefs.label "ponastavi vse uporabniške nastavitve na privzete vrednosti">
+<!ENTITY resetUserPrefs.accesskey "n">
+
+<!ENTITY restoreSearch.label "ponastavi privzete iskalnike">
+<!ENTITY restoreSearch.accesskey "i">
+
+<!ENTITY changeAndRestartButton.label "Uveljavi spremembe in ponovno zaženi program">
+<!ENTITY continueButton.label "Nadaljuj v varnem načinu">
+
+<!ENTITY autoSafeModeDescription.label "We sincerely apologize for the inconvenience. &brandShortName; is now running in Safe Mode, which temporarily disables your custom settings, themes, and extensions.">
+
+<!ENTITY autoSafeModeIntro.label      "&brandShortName; Closed Unexpectedly While Starting">

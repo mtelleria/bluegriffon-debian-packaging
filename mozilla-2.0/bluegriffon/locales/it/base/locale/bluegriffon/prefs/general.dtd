@@ -1,0 +1,21 @@
+<!ENTITY fileHistory.caption "File recenti">
+<!ENTITY fileHistoryDepth.label "Numero massimo di file nella storia recente:">
+<!ENTITY files.label "file">
+<!ENTITY restoreLastSession.label "Ripristina le schede dell'ultima sessione">
+
+<!ENTITY structureBar.caption "Barra di struttura">
+
+
+<!ENTITY showIDs.label "Mostra ID">
+<!ENTITY showClasses.label "Mostra classi">
+<!ENTITY showLanguage.label "Mostra lingua">
+<!ENTITY showRoles.label "Mostra ruolo ARIA">
+
+<!ENTITY spellCheck.caption "Controllo ortografico">
+<!ENTITY enableSpellCheck.label "Abilita controllo ortografico in tempo reale">
+<!ENTITY numberSuggestions.label "Numero di suggerimenti:">
+
+<!ENTITY tabPosition.label "Posizione delle schede">
+<!ENTITY leftTabPosition.label "Sinistra">
+<!ENTITY centerTabPosition.label "Centro">
+<!ENTITY rightTabPosition.label "Destra">

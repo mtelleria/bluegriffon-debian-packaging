@@ -1,0 +1,31 @@
+locale necko nl chrome/nl/locale/nl/necko/
+locale global-platform nl chrome/nl/locale/nl/global-platform/
+locale browser-region nl chrome/nl/locale/browser-region/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale webapprt nl chrome/nl/locale/webapprt/
+locale alerts nl chrome/nl/locale/nl/alerts/
+locale browser nl chrome/nl/locale/browser/
+locale global-region nl chrome/nl/locale/nl/global-region/
+locale passwordmgr nl chrome/nl/locale/nl/passwordmgr/
+locale mozapps nl chrome/nl/locale/nl/mozapps/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale branding nl chrome/nl/locale/branding/
+locale weave nl chrome/nl/locale/nl/
+locale pipnss nl chrome/nl/locale/nl/pipnss/
+locale global nl chrome/nl/locale/nl/global/
+locale pippki nl chrome/nl/locale/nl/pippki/
+locale cookie nl chrome/nl/locale/nl/cookie/
+locale autoconfig nl chrome/nl/locale/nl/autoconfig/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale places nl chrome/nl/locale/nl/places/
+locale testpilot nl chrome/nl/locale/feedback/
+locale bluegriffon nl base/locale/bluegriffon/
+locale branding nl base/locale/branding/
+locale fs nl extensions/fs/
+locale gfd nl extensions/gfd/
+locale cssproperties nl sidebars/cssproperties/
+locale domexplorer nl sidebars/domexplorer/
+locale scripteditor nl sidebars/scripteditor/
+locale stylesheets nl sidebars/stylesheets/
+locale tipoftheday nl extensions/tipoftheday/
+

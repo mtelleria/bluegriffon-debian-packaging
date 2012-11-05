@@ -1,0 +1,31 @@
+<!ENTITY % brandDTD
+    SYSTEM "chrome://branding/locale/brand.dtd">
+  %brandDTD;
+
+<!-- These strings are used in the about:home page -->
+
+<!ENTITY abouthome.pageTitle "דף הפתיחה של &brandFullName;">
+
+<!ENTITY abouthome.searchEngineButton.label "חיפוש">
+
+<!ENTITY abouthome.aboutMozilla "אודות Mozilla">
+
+<!-- LOCALIZATION NOTE (abouthome.defaultSnippet1.v1):
+     text in <a/> will be linked to the BlueGriffon features page on mozilla.com
+-->
+<!ENTITY abouthome.defaultSnippet1.v1 "תודה שבחרת ב־BlueGriffon! כדי להוציא את המיטב מהדפדפן שלך, למד עוד על <a>התכונות החדשות</a>.">
+<!-- LOCALIZATION NOTE (abouthome.defaultSnippet2.v1):
+     text in <a/> will be linked to the featured add-ons on addons.mozilla.org
+-->
+<!ENTITY abouthome.defaultSnippet2.v1 "קל להתאים את ה־BlueGriffon שלך בדיוק לצרכים שלך. <a>בחר מאלפי תוספות</a>.">
+
+<!ENTITY abouthome.addonsButton.label    "Add-ons">
+<!ENTITY abouthome.appsButton.label      "Marketplace">
+
+<!ENTITY abouthome.bookmarksButton.label "Bookmarks">
+<!ENTITY abouthome.downloadsButton.label "Downloads">
+<!ENTITY abouthome.historyButton.label   "History">
+<!ENTITY abouthome.settingsButton.label  "Settings">
+<!ENTITY abouthome.syncButton.label      "&syncBrand.shortName.label;">
+<!ENTITY % syncBrandDTD SYSTEM "chrome://browser/locale/syncBrand.dtd">
+%syncBrandDTD;

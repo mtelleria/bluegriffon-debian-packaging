@@ -1,0 +1,20 @@
+<!ENTITY author.caption "Tekijä">
+<!ENTITY authorName.label "Tekijän nimi:">
+
+<!ENTITY defaultZoomFactor.label "Oletusarvoinen suurennuskerroin:">
+<!ENTITY zoom.label "Sivun suurennus">
+
+<!ENTITY editingFeatures.label "Muokkausominaisuudet">
+<!ENTITY enableFloatingToolbar.label "Ota käyttöön kelluva työkalupalkki">
+
+
+<!ENTITY showComments.label "Show HTML comments">
+<!ENTITY showPHP.label "Show PHP instructions">
+<!ENTITY showPI.label "Show other Processing Instructions">
+
+
+<!ENTITY linksManagement.label "Copy/paste management of hyperlinks:">
+<!ENTITY preserveRelative.label "Preserve relative URLs">
+<!ENTITY makeAbsolute.label "Make all URLs absolute">
+<!ENTITY returnKey.label "Enter-näppäin kappaleen sisällä painettuna aloittaa aina uuden kappaleen">
+<!ENTITY keepBackup.label "Create a backup before saving a file (*.bak)">

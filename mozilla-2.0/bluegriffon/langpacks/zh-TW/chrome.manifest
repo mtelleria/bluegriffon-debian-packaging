@@ -1,0 +1,31 @@
+locale global-region zh-TW chrome/zh-TW/locale/zh-TW/global-region/
+locale browser-region zh-TW chrome/zh-TW/locale/browser-region/
+locale passwordmgr zh-TW chrome/zh-TW/locale/zh-TW/passwordmgr/
+locale alerts zh-TW chrome/zh-TW/locale/zh-TW/alerts/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale testpilot zh-TW chrome/zh-TW/locale/feedback/
+locale weave zh-TW chrome/zh-TW/locale/zh-TW/
+locale global zh-TW chrome/zh-TW/locale/zh-TW/global/
+locale webapprt zh-TW chrome/zh-TW/locale/webapprt/
+locale pipnss zh-TW chrome/zh-TW/locale/zh-TW/pipnss/
+locale places zh-TW chrome/zh-TW/locale/zh-TW/places/
+locale branding zh-TW chrome/zh-TW/locale/branding/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale mozapps zh-TW chrome/zh-TW/locale/zh-TW/mozapps/
+locale global-platform zh-TW chrome/zh-TW/locale/zh-TW/global-platform/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale cookie zh-TW chrome/zh-TW/locale/zh-TW/cookie/
+locale autoconfig zh-TW chrome/zh-TW/locale/zh-TW/autoconfig/
+locale browser zh-TW chrome/zh-TW/locale/browser/
+locale pippki zh-TW chrome/zh-TW/locale/zh-TW/pippki/
+locale necko zh-TW chrome/zh-TW/locale/zh-TW/necko/
+locale bluegriffon zh-TW base/locale/bluegriffon/
+locale branding zh-TW base/locale/branding/
+locale fs zh-TW extensions/fs/
+locale gfd zh-TW extensions/gfd/
+locale cssproperties zh-TW sidebars/cssproperties/
+locale domexplorer zh-TW sidebars/domexplorer/
+locale scripteditor zh-TW sidebars/scripteditor/
+locale stylesheets zh-TW sidebars/stylesheets/
+locale tipoftheday zh-TW extensions/tipoftheday/
+

@@ -1,0 +1,74 @@
+#inContextEmButton {
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/em.png");
+}
+
+#inContextEmButton[disabled="true"] {
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/em-disabled.png");
+}
+
+#inContextStrongButton {
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/strong.png");
+}
+
+#inContextStrongButton[disabled="true"] {
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/strong-disabled.png");
+}
+
+#inContextCodeButton{
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/code.png");
+}
+
+#inContextCodeButton[disabled="true"] {
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/code-disabled.png");
+}
+
+#inContextUnderlineButton{
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/underline.png");
+}
+
+#inContextUnderlineButton[disabled="true"] {
+  list-style-image: url("chrome://bluegriffon/skin/formatToolbar/underline-disabled.png");
+}
+
+#inContextStylePanel toolbarbutton .toolbarbutton-text {
+  display: none;
+}
+
+#inContextStylePanel toolbarbutton:hover {
+  outline: thin solid silver;
+  -moz-outline-radius: 2px;
+}
+
+#inContextStylePanel {
+  padding-top: 4px;
+}
+
+#inContextStylePanel .panel-arrowcontent {
+  background: -moz-linear-gradient(rgba(85,85,85,1), #cccccc) ! important
+}
+
+#inContextStylePanel:hover {
+  opacity: 1 ! important;
+}
+
+ecolorpicker {
+  -moz-binding: url("chrome://bluegriffon/content/bindings/ecolorpicker.xml#ecolorpicker");
+}
+
+#inContextTextColorColorpicker {
+  margin: 0px 9px 9px 0px;
+}
+
+#inContextBackgroundColorColorpicker {
+  margin: 9px 0px 0px 9px;
+}
+
+#inContextStylePanel .resizingBox {
+  height: 6px;
+  background: transparent;
+  cursor: -moz-grab
+}
+
+#inContextStylePanel .resizingBox:active {
+  cursor: -moz-grabbing;
+}

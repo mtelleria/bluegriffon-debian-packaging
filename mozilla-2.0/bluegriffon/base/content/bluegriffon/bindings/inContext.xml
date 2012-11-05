@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<bindings id="inContextBindings"
+   xmlns="http://www.mozilla.org/xbl"
+   xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+   xmlns:xbl="http://www.mozilla.org/xbl">
+
+  <binding id="inContext"
+           extends="chrome://global/content/bindings/popup.xml#arrowpanel">
+    <content noautohide="true">
+      <children/>
+    </content>
+  </binding>
+
+</bindings>
+

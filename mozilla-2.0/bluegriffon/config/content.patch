@@ -1,0 +1,1532 @@
+diff -r 6b26bdffa1bc browser/app/profile/firefox.js
+--- a/browser/app/profile/firefox.js	Mon Apr 23 10:30:58 2012 +0200
++++ b/browser/app/profile/firefox.js	Wed May 23 15:08:42 2012 +0200
+@@ -227,6 +227,7 @@
+ pref("extensions.dss.enabled", false);          // Dynamic Skin Switching                                               
+ pref("extensions.dss.switchPending", false);    // Non-dynamic switch pending after next
+                                                 // restart.
++pref("extensions.closeOnEscape", false); // allow the escape key to close the add-ons manager if it is standalone
+ 
+ pref("extensions.{972ce4c6-7e08-4474-a285-3208198ce6fd}.name", "chrome://browser/locale/browser.properties");
+ pref("extensions.{972ce4c6-7e08-4474-a285-3208198ce6fd}.description", "chrome://browser/locale/browser.properties");
+diff -r 6b26bdffa1bc caps/src/nsScriptSecurityManager.cpp
+--- a/caps/src/nsScriptSecurityManager.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/caps/src/nsScriptSecurityManager.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -1533,6 +1533,7 @@
+                              &hasFlags);
+     NS_ENSURE_SUCCESS(rv, rv);
+     if (hasFlags) {
++        return NS_OK;
+         if (aFlags & nsIScriptSecurityManager::ALLOW_CHROME) {
+             if (!targetScheme.EqualsLiteral("chrome")) {
+                 // for now don't change behavior for resource: or moz-icon:
+@@ -1572,6 +1573,7 @@
+                              &hasFlags);
+     NS_ENSURE_SUCCESS(rv, rv);
+     if (hasFlags) {
++        return NS_OK;
+         // resource: and chrome: are equivalent, securitywise
+         // That's bogus!!  Fix this.  But watch out for
+         // the view-source stylesheet?
+diff -r 6b26bdffa1bc content/base/public/nsIDocumentEncoder.idl
+--- a/content/base/public/nsIDocumentEncoder.idl	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/base/public/nsIDocumentEncoder.idl	Wed May 23 15:08:42 2012 +0200
+@@ -68,7 +68,7 @@
+   nsIDOMNode fixupNode(in nsIDOMNode aNode, out boolean aSerializeCloneKids);
+ };
+ 
+-[scriptable, uuid(7222bdf1-c2b9-41f1-a40a-a3d65283a95b)]
++[scriptable, uuid(30a3161c-09e0-425e-84e6-ff952c0fd859)]
+ interface nsIDocumentEncoder : nsISupports
+ {
+   // Output methods flag bits. There are a frightening number of these,
+@@ -237,6 +237,11 @@
+    */
+   const unsigned long OutputFormatDelSp  = (1 << 20);
+  
++ /**
++   * Output all non-ascii characters as numeric entities
++   */
++  const unsigned long OutputEncodeCharacterEntities = (1 << 21);
++
+   /**
+    * Drop <br> elements considered "invisible" by the editor. OutputPreformatted
+    * implies this flag.
+diff -r 6b26bdffa1bc content/base/src/nsCopySupport.cpp
+--- a/content/base/src/nsCopySupport.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/base/src/nsCopySupport.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -449,7 +449,7 @@
+   // copy it properly (all the copy code for non-plaintext assumes using HTML
+   // serializers and parsers is OK, and those mess up XHTML).
+   nsCOMPtr<nsIHTMLDocument> htmlDoc = do_QueryInterface(aDoc);
+-  if (!(htmlDoc && aDoc->IsHTML()))
++  if (!htmlDoc)
+     *aIsPlainTextContext = true;
+ 
+   return NS_OK;
+@@ -611,8 +611,9 @@
+ 
+   // init encoder with document and node
+   rv = docEncoder->Init(domDocument, NS_LITERAL_STRING(kHTMLMime),
+-                        nsIDocumentEncoder::OutputAbsoluteLinks |
+-                        nsIDocumentEncoder::OutputEncodeW3CEntities);
++                        Preferences::GetBool("clipboard.absoluteLinks", true)
++                          ? nsIDocumentEncoder::OutputEncodeCharacterEntities | nsIDocumentEncoder::OutputAbsoluteLinks
++                          : nsIDocumentEncoder::OutputEncodeCharacterEntities);
+   NS_ENSURE_SUCCESS(rv, rv);
+ 
+   rv = docEncoder->SetNode(aDOMNode);
+diff -r 6b26bdffa1bc content/base/src/nsDocumentEncoder.cpp
+--- a/content/base/src/nsDocumentEncoder.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/base/src/nsDocumentEncoder.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -88,6 +88,8 @@
+ #include "nsIHTMLEditor.h"
+ #include "nsIDocShell.h"
+ 
++#include "mozilla/Preferences.h"
++
+ using namespace mozilla;
+ using namespace mozilla::dom;
+ 
+@@ -1302,7 +1304,9 @@
+ 
+   // Make all links absolute when copying
+   // (see related bugs #57296, #41924, #58646, #32768)
+-  mFlags = aFlags | OutputAbsoluteLinks;
++  mFlags = Preferences::GetBool("clipboard.absoluteLinks", true)
++            ? aFlags | nsIDocumentEncoder::OutputAbsoluteLinks
++            : aFlags;
+ 
+   if (!mDocument->IsScriptEnabled())
+     mFlags |= OutputNoScriptContent;
+@@ -1370,7 +1374,7 @@
+   
+   // also consider ourselves in a text widget if we can't find an html document
+   nsCOMPtr<nsIHTMLDocument> htmlDoc = do_QueryInterface(mDocument);
+-  if (!(htmlDoc && mDocument->IsHTML()))
++  if (!htmlDoc)
+     mIsTextWidget = true;
+   
+   // normalize selection if we are not in a widget
+diff -r 6b26bdffa1bc content/base/src/nsHTMLContentSerializer.cpp
+--- a/content/base/src/nsHTMLContentSerializer.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/base/src/nsHTMLContentSerializer.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -228,99 +228,109 @@
+   nsIAtom *name = content->Tag();
+   PRInt32 ns = content->GetNameSpaceID();
+ 
+-  bool lineBreakBeforeOpen = LineBreakBeforeOpen(ns, name);
++  bool hideTag = false;
++  if (ns != kNameSpaceID_XHTML) {
++    nsAutoString nsStr;
++    nsresult rv = nsContentUtils::NameSpaceManager()->GetNameSpaceURI(ns, nsStr);
++    hideTag = ( NS_SUCCEEDED(rv) && nsStr.LowerCaseEqualsLiteral("http://disruptive-innovations.com/zoo/bluegriffon"));
++  }
+ 
+-  if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
+-    if (mColPos && lineBreakBeforeOpen) {
+-      AppendNewLineToString(aStr);
+-    }
+-    else {
+-      MaybeAddNewlineForRootNode(aStr);
+-    }
+-    if (!mColPos) {
+-      AppendIndentation(aStr);
++  if (!hideTag) {
++    bool lineBreakBeforeOpen = LineBreakBeforeOpen(ns, name);
++
++    if (((mDoFormat || forceFormat) && !mPreLevel) || mDoRaw) {
++      if (mColPos && lineBreakBeforeOpen) {
++        AppendNewLineToString(aStr);
++        mMayIgnoreLineBreakSequence = PR_FALSE;
++      }
++      else {
++        MaybeAddNewlineForRootNode(aStr);
++      }
++      if (!mColPos && !mDoRaw) {
++        AppendIndentation(aStr);
++      }
++      else if (mAddSpace) {
++        AppendToString(PRUnichar(' '), aStr);
++        mAddSpace = false;
++      }
+     }
+     else if (mAddSpace) {
+       AppendToString(PRUnichar(' '), aStr);
+       mAddSpace = false;
+     }
+-  }
+-  else if (mAddSpace) {
+-    AppendToString(PRUnichar(' '), aStr);
+-    mAddSpace = false;
+-  }
+-  else {
+-    MaybeAddNewlineForRootNode(aStr);
+-  }
+-  // Always reset to avoid false newlines in case MaybeAddNewlineForRootNode wasn't
+-  // called
+-  mAddNewlineForRootNode = false;
++    else {
++      MaybeAddNewlineForRootNode(aStr);
++    }
++    // Always reset to avoid false newlines in case MaybeAddNewlineForRootNode wasn't
++    // called
++    mAddNewlineForRootNode = false;
++
++    AppendToString(kLessThan, aStr);
++
++    AppendToString(nsDependentAtomString(name), aStr);
++
++    MaybeEnterInPreContent(content);
++
++    // for block elements, we increase the indentation
++    if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw)
++      IncrIndentation(name);
++
++    // Need to keep track of OL and LI elements in order to get ordinal number
++    // for the LI.
++    if (mIsCopying && name == nsGkAtoms::ol && ns == kNameSpaceID_XHTML){
++      // We are copying and current node is an OL;
++      // Store its start attribute value in olState->startVal.
++      nsAutoString start;
++      PRInt32 startAttrVal = 0;
++
++      aElement->GetAttr(kNameSpaceID_None, nsGkAtoms::start, start);
++      if (!start.IsEmpty()){
++        PRInt32 rv = 0;
++        startAttrVal = start.ToInteger(&rv);
++        //If OL has "start" attribute, first LI element has to start with that value
++        //Therefore subtracting 1 as all the LI elements are incrementing it before using it;
++        //In failure of ToInteger(), default StartAttrValue to 0.
++        if (NS_SUCCEEDED(rv))
++          startAttrVal--;
++        else
++          startAttrVal = 0;
++      }
++      mOLStateStack.AppendElement(olState(startAttrVal, true));
++    }
++
++    if (mIsCopying && name == nsGkAtoms::li && ns == kNameSpaceID_XHTML) {
++      mIsFirstChildOfOL = IsFirstChildOfOL(aOriginalElement);
++      if (mIsFirstChildOfOL){
++        // If OL is parent of this LI, serialize attributes in different manner.
++        SerializeLIValueAttribute(aElement, aStr);
++      }
++    }
+   
+-  AppendToString(kLessThan, aStr);
++    // Even LI passed above have to go through this
++    // for serializing attributes other than "value".
++    nsAutoString dummyPrefix;
++    SerializeHTMLAttributes(content,
++                            aOriginalElement,
++                            dummyPrefix,
++                            EmptyString(),
++                            name,
++                            ns,
++                            aStr);
+ 
+-  AppendToString(nsDependentAtomString(name), aStr);
++    AppendToString(kGreaterThan, aStr);
+ 
+-  MaybeEnterInPreContent(content);
++    if (ns == kNameSpaceID_XHTML &&
++        (name == nsGkAtoms::script ||
++         name == nsGkAtoms::style ||
++         name == nsGkAtoms::noscript ||
++         name == nsGkAtoms::noframes)) {
++      ++mDisableEntityEncoding;
++    }
+ 
+-  // for block elements, we increase the indentation
+-  if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw)
+-    IncrIndentation(name);
+-
+-  // Need to keep track of OL and LI elements in order to get ordinal number 
+-  // for the LI.
+-  if (mIsCopying && name == nsGkAtoms::ol && ns == kNameSpaceID_XHTML){
+-    // We are copying and current node is an OL;
+-    // Store its start attribute value in olState->startVal.
+-    nsAutoString start;
+-    PRInt32 startAttrVal = 0;
+-
+-    aElement->GetAttr(kNameSpaceID_None, nsGkAtoms::start, start);
+-    if (!start.IsEmpty()){
+-      PRInt32 rv = 0;
+-      startAttrVal = start.ToInteger(&rv);
+-      //If OL has "start" attribute, first LI element has to start with that value
+-      //Therefore subtracting 1 as all the LI elements are incrementing it before using it;
+-      //In failure of ToInteger(), default StartAttrValue to 0.
+-      if (NS_SUCCEEDED(rv))
+-        startAttrVal--; 
+-      else
+-        startAttrVal = 0;
++    if ((mDoFormat || forceFormat) && !mPreLevel &&
++      !mDoRaw && LineBreakAfterOpen(ns, name)) {
++      AppendNewLineToString(aStr);
+     }
+-    mOLStateStack.AppendElement(olState(startAttrVal, true));
+-  }
+-
+-  if (mIsCopying && name == nsGkAtoms::li && ns == kNameSpaceID_XHTML) {
+-    mIsFirstChildOfOL = IsFirstChildOfOL(aOriginalElement);
+-    if (mIsFirstChildOfOL){
+-      // If OL is parent of this LI, serialize attributes in different manner.
+-      SerializeLIValueAttribute(aElement, aStr);
+-    }
+-  }
+-
+-  // Even LI passed above have to go through this 
+-  // for serializing attributes other than "value".
+-  nsAutoString dummyPrefix;
+-  SerializeHTMLAttributes(content,
+-                          aOriginalElement,
+-                          dummyPrefix,
+-                          EmptyString(),
+-                          name,
+-                          ns,
+-                          aStr);
+-
+-  AppendToString(kGreaterThan, aStr);
+-
+-  if (ns == kNameSpaceID_XHTML &&
+-      (name == nsGkAtoms::script ||
+-       name == nsGkAtoms::style ||
+-       name == nsGkAtoms::noscript ||
+-       name == nsGkAtoms::noframes)) {
+-    ++mDisableEntityEncoding;
+-  }
+-
+-  if ((mDoFormat || forceFormat) && !mPreLevel &&
+-    !mDoRaw && LineBreakAfterOpen(ns, name)) {
+-    AppendNewLineToString(aStr);
+   }
+ 
+   AfterElementStart(content, aOriginalElement, aStr);
+@@ -339,6 +349,13 @@
+   nsIAtom *name = content->Tag();
+   PRInt32 ns = content->GetNameSpaceID();
+ 
++  if (ns != kNameSpaceID_XHTML) {
++    nsAutoString nsStr;
++    nsresult rv = nsContentUtils::NameSpaceManager()->GetNameSpaceURI(ns, nsStr);
++    if (NS_SUCCEEDED(rv) && nsStr.LowerCaseEqualsLiteral("http://disruptive-innovations.com/zoo/bluegriffon"))
++      return NS_OK;
++  }
++
+   if (ns == kNameSpaceID_XHTML &&
+       (name == nsGkAtoms::script ||
+        name == nsGkAtoms::style ||
+@@ -505,7 +522,8 @@
+   bool nonBasicEntities =
+     !!(mFlags & (nsIDocumentEncoder::OutputEncodeLatin1Entities |
+                  nsIDocumentEncoder::OutputEncodeHTMLEntities   |
+-                 nsIDocumentEncoder::OutputEncodeW3CEntities));
++                 nsIDocumentEncoder::OutputEncodeW3CEntities    |
++                 nsIDocumentEncoder::OutputEncodeCharacterEntities));
+ 
+   if (!nonBasicEntities &&
+       (mFlags & (nsIDocumentEncoder::OutputEncodeBasicEntities))) {
+@@ -561,7 +579,13 @@
+       // needs to be replaced
+       for (; c < fragmentEnd; c++, advanceLength++) {
+         PRUnichar val = *c;
+-        if (val <= kValNBSP && entityTable[val]) {
++        if ((val == kValNBSP || val > 127) &&
++            (mFlags & nsIDocumentEncoder::OutputEncodeCharacterEntities)) {
++          nsAutoString entityValue(PRUnichar('#'));
++          entityValue.AppendInt(val);
++          entityText = ToNewCString(entityValue);
++          break;
++        } else if (val <= kValNBSP && entityTable[val]) {
+           fullConstEntityText = entityTable[val];
+           break;
+         } else if (val > 127 &&
+diff -r 6b26bdffa1bc content/base/src/nsXHTMLContentSerializer.cpp
+--- a/content/base/src/nsXHTMLContentSerializer.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/base/src/nsXHTMLContentSerializer.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -100,14 +100,6 @@
+                               const char* aCharSet, bool aIsCopying,
+                               bool aRewriteEncodingDeclaration)
+ {
+-  // The previous version of the HTML serializer did implicit wrapping
+-  // when there is no flags, so we keep wrapping in order to keep
+-  // compatibility with the existing calling code
+-  // XXXLJ perhaps should we remove this default settings later ?
+-  if (aFlags & nsIDocumentEncoder::OutputFormatted ) {
+-      aFlags = aFlags | nsIDocumentEncoder::OutputWrap;
+-  }
+-
+   nsresult rv;
+   rv = nsXMLContentSerializer::Init(aFlags, aWrapColumn, aCharSet, aIsCopying, aRewriteEncodingDeclaration);
+   NS_ENSURE_SUCCESS(rv, rv);
+@@ -767,7 +759,16 @@
+       aName == nsGkAtoms::select ||
+       aName == nsGkAtoms::option ||
+       aName == nsGkAtoms::script ||
+-      aName == nsGkAtoms::html) {
++      aName == nsGkAtoms::html ||
++      aName == nsGkAtoms::head ||
++      //aName == nsGkAtoms::body ||
++      aName == nsGkAtoms::table ||
++      aName == nsGkAtoms::caption ||
++      aName == nsGkAtoms::tbody ||
++      aName == nsGkAtoms::thead ||
++      aName == nsGkAtoms::tfoot ||
++      aName == nsGkAtoms::tr ||
++      aName == nsGkAtoms::td) {
+     return true;
+   }
+   else {
+@@ -794,7 +795,7 @@
+ 
+   if ((aName == nsGkAtoms::html) ||
+       (aName == nsGkAtoms::head) ||
+-      (aName == nsGkAtoms::body) ||
++      // (aName == nsGkAtoms::body) ||
+       (aName == nsGkAtoms::ul) ||
+       (aName == nsGkAtoms::ol) ||
+       (aName == nsGkAtoms::dl) ||
+@@ -831,7 +832,10 @@
+       (aName == nsGkAtoms::dl) ||
+       (aName == nsGkAtoms::select) ||
+       (aName == nsGkAtoms::table) ||
+-      (aName == nsGkAtoms::tbody)) {
++      (aName == nsGkAtoms::tbody) ||
++      (aName == nsGkAtoms::thead) ||
++      (aName == nsGkAtoms::tfoot) ||
++      (aName == nsGkAtoms::tr)) {
+     return true;
+   }
+   return false;
+@@ -896,6 +900,8 @@
+       name == nsGkAtoms::noframes
+       ) {
+     mPreLevel++;
++    if (name != nsGkAtoms::pre)
++      ++mDisableEntityEncoding;
+   }
+ }
+ 
+@@ -914,6 +920,8 @@
+       name == nsGkAtoms::noframes
+     ) {
+     --mPreLevel;
++    if (name != nsGkAtoms::pre)
++      --mDisableEntityEncoding;
+   }
+ }
+ 
+diff -r 6b26bdffa1bc content/base/src/nsXMLContentSerializer.cpp
+--- a/content/base/src/nsXMLContentSerializer.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/base/src/nsXMLContentSerializer.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -649,7 +649,25 @@
+   bool rawAppend = mDoRaw && aDoEscapeEntities;
+   nsAString& attrString = (rawAppend) ? aStr : attrString_;
+ 
+-  attrString.Append(PRUnichar(' '));
++  if (mColPos + 1 >= mMaxColumn && !mDoRaw) {
++    if (mPreLevel > 0) {
++      AppendToStringConvertLF(mLineBreak, aStr);
++    }
++    else if (mDoFormat) {
++      AppendToStringFormatedWrapped(mLineBreak, aStr);
++      AppendIndentation(aStr);
++    }
++    else if (mDoWrap) {
++      AppendToStringWrapped(mLineBreak, aStr);
++      AppendIndentation(aStr);
++    }
++    else {
++      AppendToStringConvertLF(mLineBreak, aStr);
++    }
++  }
++  else
++    attrString.Append(PRUnichar(' '));
++
+   if (!aPrefix.IsEmpty()) {
+     attrString.Append(aPrefix);
+     attrString.Append(PRUnichar(':'));
+@@ -723,6 +741,8 @@
+     attrString.Append(sValue);
+     attrString.Append(cDelimiter);
+   }
++  AppendToStringConvertLF(attrString, aStr);
++  /* XXX
+   if (mPreLevel > 0 || mDoRaw) {
+     AppendToStringConvertLF(attrString, aStr);
+   }
+@@ -735,6 +755,7 @@
+   else {
+     AppendToStringConvertLF(attrString, aStr);
+   }
++  */
+ }
+ 
+ PRUint32 
+@@ -932,66 +953,74 @@
+   aElement->NodeInfo()->GetName(tagLocalName);
+   aElement->NodeInfo()->GetNamespaceURI(tagNamespaceURI);
+ 
+-  PRUint32 skipAttr = ScanNamespaceDeclarations(content,
+-                          aOriginalElement, tagNamespaceURI);
++  bool hideTag = tagNamespaceURI.LowerCaseEqualsLiteral("http://disruptive-innovations.com/zoo/bluegriffon");
++  if (!hideTag) {
++    PRUint32 skipAttr = ScanNamespaceDeclarations(content,
++                            aOriginalElement, tagNamespaceURI);
+ 
+-  nsIAtom *name = content->Tag();
+-  bool lineBreakBeforeOpen = LineBreakBeforeOpen(content->GetNameSpaceID(), name);
++    nsIAtom *name = content->Tag();
++    bool lineBreakBeforeOpen = LineBreakBeforeOpen(content->GetNameSpaceID(), name);
+ 
+-  if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
+-    if (mColPos && lineBreakBeforeOpen) {
+-      AppendNewLineToString(aStr);
+-    }
+-    else {
+-      MaybeAddNewlineForRootNode(aStr);
+-    }
+-    if (!mColPos) {
+-      AppendIndentation(aStr);
++    if (((mDoFormat || forceFormat) && !mPreLevel) || mDoRaw) {
++      if (mColPos && lineBreakBeforeOpen) {
++        AppendNewLineToString(aStr);
++      }
++      else {
++        MaybeAddNewlineForRootNode(aStr);
++      }
++      if (!mColPos) {
++        AppendIndentation(aStr);
++      }
++      else if (mAddSpace) {
++        AppendToString(PRUnichar(' '), aStr);
++        mAddSpace = false;
++      }
+     }
+     else if (mAddSpace) {
+       AppendToString(PRUnichar(' '), aStr);
+       mAddSpace = false;
+     }
+-  }
+-  else if (mAddSpace) {
+-    AppendToString(PRUnichar(' '), aStr);
+-    mAddSpace = false;
+-  }
+-  else {
+-    MaybeAddNewlineForRootNode(aStr);
+-  }
++    else {
++      MaybeAddNewlineForRootNode(aStr);
++    }
+ 
+-  // Always reset to avoid false newlines in case MaybeAddNewlineForRootNode wasn't
+-  // called
+-  mAddNewlineForRootNode = false;
++    // Always reset to avoid false newlines in case MaybeAddNewlineForRootNode wasn't
++    // called
++    mAddNewlineForRootNode = false;
+ 
+-  bool addNSAttr;
+-  addNSAttr = ConfirmPrefix(tagPrefix, tagNamespaceURI, aOriginalElement,
+-                            false);
++    bool addNSAttr;
++    addNSAttr = ConfirmPrefix(tagPrefix, tagNamespaceURI, aOriginalElement,
++                              false);
+ 
+-  // Serialize the qualified name of the element
+-  AppendToString(kLessThan, aStr);
+-  if (!tagPrefix.IsEmpty()) {
+-    AppendToString(tagPrefix, aStr);
+-    AppendToString(NS_LITERAL_STRING(":"), aStr);
+-  }
+-  AppendToString(tagLocalName, aStr);
++    if (!mNameSpaceStack.Length()
++        && tagNamespaceURI.EqualsLiteral("http://www.w3.org/1999/xhtml")
++        && !tagLocalName.EqualsLiteral("html"))
++      addNSAttr = PR_FALSE;
+ 
+-  MaybeEnterInPreContent(content);
++    // Serialize the qualified name of the element
++    AppendToString(kLessThan, aStr);
++    if (!tagPrefix.IsEmpty()) {
++      AppendToString(tagPrefix, aStr);
++      AppendToString(NS_LITERAL_STRING(":"), aStr);
++    }
++    AppendToString(tagLocalName, aStr);
+ 
+-  if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
+-    IncrIndentation(name);
+-  }
++    MaybeEnterInPreContent(content);
+ 
+-  SerializeAttributes(content, aOriginalElement, tagPrefix, tagNamespaceURI,
+-                      name, aStr, skipAttr, addNSAttr);
++    if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
++      IncrIndentation(name);
++    }
+ 
+-  AppendEndOfElementStart(aOriginalElement, name, content->GetNameSpaceID(),
+-                          aStr);
++    SerializeAttributes(content, aOriginalElement, tagPrefix, tagNamespaceURI,
++                        name, aStr, skipAttr, addNSAttr);
+ 
+-  if ((mDoFormat || forceFormat) && !mPreLevel 
+-    && !mDoRaw && LineBreakAfterOpen(content->GetNameSpaceID(), name)) {
+-    AppendNewLineToString(aStr);
++    AppendEndOfElementStart(aOriginalElement, name, content->GetNameSpaceID(),
++                            aStr);
++
++    if ((mDoFormat || forceFormat) && !mPreLevel
++      && !mDoRaw && LineBreakAfterOpen(content->GetNameSpaceID(), name)) {
++      AppendNewLineToString(aStr);
++    }
+   }
+ 
+   AfterElementStart(content, aOriginalElement, aStr);
+@@ -1022,71 +1051,74 @@
+ 
+   nsIContent* content = aElement;
+ 
+-  bool forceFormat = false, outputElementEnd;
+-  outputElementEnd = CheckElementEnd(content, forceFormat, aStr);
++  nsAutoString tagPrefix, tagLocalName, tagNamespaceURI;
+ 
+-  nsIAtom *name = content->Tag();
+-
+-  if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
+-    DecrIndentation(name);
+-  }
+-
+-  if (!outputElementEnd) {
+-    PopNameSpaceDeclsFor(aElement);
+-    MaybeFlagNewlineForRootNode(aElement);
+-    return NS_OK;
+-  }
+-
+-  nsAutoString tagPrefix, tagLocalName, tagNamespaceURI;
+-  
+   aElement->NodeInfo()->GetPrefix(tagPrefix);
+   aElement->NodeInfo()->GetName(tagLocalName);
+   aElement->NodeInfo()->GetNamespaceURI(tagNamespaceURI);
+ 
+-#ifdef DEBUG
+-  bool debugNeedToPushNamespace =
+-#endif
+-  ConfirmPrefix(tagPrefix, tagNamespaceURI, aElement, false);
+-  NS_ASSERTION(!debugNeedToPushNamespace, "Can't push namespaces in closing tag!");
++  bool hideTag = tagNamespaceURI.LowerCaseEqualsLiteral("http://disruptive-innovations.com/zoo/bluegriffon");
++  if (!hideTag) {
++    bool forceFormat = false, outputElementEnd;
++    outputElementEnd = CheckElementEnd(content, forceFormat, aStr);
+ 
+-  if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
++    nsIAtom *name = content->Tag();
+ 
+-    bool lineBreakBeforeClose = LineBreakBeforeClose(content->GetNameSpaceID(), name);
++    if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
++      DecrIndentation(name);
++    }
++  
++    if (!outputElementEnd) {
++      PopNameSpaceDeclsFor(aElement);
++      MaybeFlagNewlineForRootNode(aElement);
++      return NS_OK;
++    }
+ 
+-    if (mColPos && lineBreakBeforeClose) {
+-      AppendNewLineToString(aStr);
+-    }
+-    if (!mColPos) {
+-      AppendIndentation(aStr);
++  #ifdef DEBUG
++    bool debugNeedToPushNamespace =
++  #endif
++    ConfirmPrefix(tagPrefix, tagNamespaceURI, aElement, false);
++    NS_ASSERTION(!debugNeedToPushNamespace, "Can't push namespaces in closing tag!");
++
++    if ((mDoFormat || forceFormat) && !mPreLevel && !mDoRaw) {
++
++      bool lineBreakBeforeClose = LineBreakBeforeClose(content->GetNameSpaceID(), name);
++
++      if (mColPos && lineBreakBeforeClose) {
++        AppendNewLineToString(aStr);
++      }
++      if (!mColPos) {
++        AppendIndentation(aStr);
++      }
++      else if (mAddSpace) {
++        AppendToString(PRUnichar(' '), aStr);
++        mAddSpace = false;
++      }
+     }
+     else if (mAddSpace) {
+       AppendToString(PRUnichar(' '), aStr);
+       mAddSpace = false;
+     }
+-  }
+-  else if (mAddSpace) {
+-    AppendToString(PRUnichar(' '), aStr);
+-    mAddSpace = false;
+-  }
+ 
+-  AppendToString(kEndTag, aStr);
+-  if (!tagPrefix.IsEmpty()) {
+-    AppendToString(tagPrefix, aStr);
+-    AppendToString(NS_LITERAL_STRING(":"), aStr);
+-  }
+-  AppendToString(tagLocalName, aStr);
+-  AppendToString(kGreaterThan, aStr);
++    AppendToString(kEndTag, aStr);
++    if (!tagPrefix.IsEmpty()) {
++      AppendToString(tagPrefix, aStr);
++      AppendToString(NS_LITERAL_STRING(":"), aStr);
++    }
++    AppendToString(tagLocalName, aStr);
++    AppendToString(kGreaterThan, aStr);
+ 
+-  PopNameSpaceDeclsFor(aElement);
++    PopNameSpaceDeclsFor(aElement);
+ 
+-  MaybeLeaveFromPreContent(content);
++    MaybeLeaveFromPreContent(content);
+ 
+-  if ((mDoFormat || forceFormat) && !mPreLevel
+-      && !mDoRaw && LineBreakAfterClose(content->GetNameSpaceID(), name)) {
+-    AppendNewLineToString(aStr);
+-  }
+-  else {
+-    MaybeFlagNewlineForRootNode(aElement);
++    if ((mDoFormat || forceFormat) && !mPreLevel
++        && !mDoRaw && LineBreakAfterClose(content->GetNameSpaceID(), name)) {
++      AppendNewLineToString(aStr);
++    }
++    else {
++      MaybeFlagNewlineForRootNode(aElement);
++    }
+   }
+ 
+   AfterElementEnd(content, aStr);
+@@ -1170,6 +1202,23 @@
+     return;
+   }
+   mColPos += aStr.Length();
++  nsASingleFragmentString::const_char_iterator pos, end, sequenceStart;
++
++  aStr.BeginReading(pos);
++  aStr.EndReading(end);
++  bool foundCR = PR_FALSE;
++  bool foundOtherThanCROrBlank = PR_FALSE;
++  while (pos < end) {
++    if (*pos == '\n' || *pos == '\r')
++      foundCR = PR_TRUE;
++    else if (*pos != ' ' && *pos != '\t')
++      foundOtherThanCROrBlank = PR_TRUE;
++    pos++;
++  }
++
++  if (foundCR && !foundOtherThanCROrBlank) {
++    mMayIgnoreLineBreakSequence = PR_TRUE;
++  }
+   aOutputStr.Append(aStr);
+ }
+ 
+@@ -1280,6 +1329,10 @@
+ void
+ nsXMLContentSerializer::AppendNewLineToString(nsAString& aStr)
+ {
++  if (!mPreLevel && mMayIgnoreLineBreakSequence) {
++    mMayIgnoreLineBreakSequence = PR_FALSE;
++    return;
++  }
+   AppendToString(mLineBreak, aStr);
+   mMayIgnoreLineBreakSequence = true;
+   mColPos = 0;
+@@ -1449,6 +1502,7 @@
+       // Since we only saw linebreaks, but no spaces or tabs,
+       // let's write a linebreak now.
+       AppendNewLineToString(aOutputStr);
++      mMayIgnoreLineBreakSequence = PR_TRUE;
+     }
+   }
+ }
+@@ -1575,9 +1629,29 @@
+             aOutputStr.Append(PRUnichar(' '));
+             mAddSpace = false;
+           }
++          bool CRDone = PR_FALSE;
++          if (wrapPosition) {
++            CRDone = (*(aSequenceStart + wrapPosition - 1) == '\n');
++          }
+           aOutputStr.Append(aSequenceStart, wrapPosition);
+ 
+-          AppendNewLineToString(aOutputStr);
++          if (CRDone) {
++            // we found a wrapping spot but there is a newline
++            // char right before that point... So we don't need another CR.
++            mMayIgnoreLineBreakSequence = PR_TRUE;
++            mColPos = 0;
++            mAddSpace = PR_FALSE;
++            mIsIndentationAddedOnCurrentLine = PR_FALSE;
++          }
++          else {
++            AppendNewLineToString(aOutputStr);
++          }
++
++          if (mDoFormat) {
++            AppendIndentation(aOutputStr);
++          }
++
++          mMayIgnoreLineBreakSequence = PR_TRUE;
+           aPos = aSequenceStart + wrapPosition;
+           aMayIgnoreStartOfLineWhitespaceSequence = true;
+         }
+diff -r 6b26bdffa1bc content/xbl/src/nsXBLContentSink.cpp
+--- a/content/xbl/src/nsXBLContentSink.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/xbl/src/nsXBLContentSink.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -205,6 +205,8 @@
+ nsXBLContentSink::ReportError(const PRUnichar* aErrorText, 
+                               const PRUnichar* aSourceText,
+                               nsIScriptError *aError,
++                              PRUint32 aLineNumber,
++                              PRUint32 aColNumber,
+                               bool *_retval)
+ {
+   NS_PRECONDITION(aError && aSourceText && aErrorText, "Check arguments!!!");
+@@ -230,6 +232,8 @@
+   return nsXMLContentSink::ReportError(aErrorText, 
+                                        aSourceText, 
+                                        aError,
++                                       aLineNumber,
++                                       aColNumber,
+                                        _retval);
+ }
+ 
+diff -r 6b26bdffa1bc content/xbl/src/nsXBLContentSink.h
+--- a/content/xbl/src/nsXBLContentSink.h	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/xbl/src/nsXBLContentSink.h	Wed May 23 15:08:42 2012 +0200
+@@ -153,6 +153,8 @@
+   NS_IMETHOD ReportError(const PRUnichar* aErrorText,
+                          const PRUnichar* aSourceText,
+                          nsIScriptError *aError,
++                         PRUint32 aLineNumber,
++                         PRUint32 aColNumber,
+                          bool *_retval);
+ 
+ protected:
+diff -r 6b26bdffa1bc content/xml/document/src/nsXMLContentSink.cpp
+--- a/content/xml/document/src/nsXMLContentSink.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/xml/document/src/nsXMLContentSink.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -1398,6 +1398,8 @@
+ nsXMLContentSink::ReportError(const PRUnichar* aErrorText, 
+                               const PRUnichar* aSourceText,
+                               nsIScriptError *aError,
++                              PRUint32 aLineNumber,
++                              PRUint32 aColNumber,
+                               bool *_retval)
+ {
+   NS_PRECONDITION(aError && aSourceText && aErrorText, "Check arguments!!!");
+@@ -1449,7 +1451,15 @@
+                                    NS_LITERAL_STRING("href=\"chrome://global/locale/intl.css\" type=\"text/css\"").get());
+   NS_ENSURE_SUCCESS(rv, rv);
+ 
+-  const PRUnichar* noAtts[] = { 0, 0 };
++  nsAutoString lineString, colString;
++  lineString.AppendInt(aLineNumber);
++  colString.AppendInt(aColNumber);
++  const PRUnichar* noAtts[] = { NS_LITERAL_STRING("line").get(),
++                                lineString.get(),
++                                NS_LITERAL_STRING("col").get(),
++                                colString.get(),
++                                0,
++                                0 };
+ 
+   NS_NAMED_LITERAL_STRING(errorNs,
+                           "http://www.mozilla.org/newlayout/xml/parsererror.xml");
+@@ -1458,7 +1468,7 @@
+   parsererror.Append((PRUnichar)0xFFFF);
+   parsererror.AppendLiteral("parsererror");
+   
+-  rv = HandleStartElement(parsererror.get(), noAtts, 0, -1, (PRUint32)-1,
++  rv = HandleStartElement(parsererror.get(), noAtts, 2, -1, (PRUint32)-1,
+                           false);
+   NS_ENSURE_SUCCESS(rv, rv);
+ 
+diff -r 6b26bdffa1bc content/xslt/src/xslt/txMozillaStylesheetCompiler.cpp
+--- a/content/xslt/src/xslt/txMozillaStylesheetCompiler.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/xslt/src/xslt/txMozillaStylesheetCompiler.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -235,6 +235,8 @@
+ txStylesheetSink::ReportError(const PRUnichar *aErrorText,
+                               const PRUnichar *aSourceText,
+                               nsIScriptError *aError,
++                              PRUint32 aLineNumber,
++                              PRUint32 aColNumber,
+                               bool *_retval)
+ {
+     NS_PRECONDITION(aError && aSourceText && aErrorText, "Check arguments!!!");
+diff -r 6b26bdffa1bc content/xul/document/src/nsXULContentSink.cpp
+--- a/content/xul/document/src/nsXULContentSink.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/content/xul/document/src/nsXULContentSink.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -726,6 +726,8 @@
+ XULContentSinkImpl::ReportError(const PRUnichar* aErrorText, 
+                                 const PRUnichar* aSourceText,
+                                 nsIScriptError *aError,
++                                PRUint32 aLineNumber,
++                                PRUint32 aColNumber,
+                                 bool *_retval)
+ {
+   NS_PRECONDITION(aError && aSourceText && aErrorText, "Check arguments!!!");
+diff -r 6b26bdffa1bc dom/base/nsFocusManager.cpp
+--- a/dom/base/nsFocusManager.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/dom/base/nsFocusManager.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -2462,19 +2462,6 @@
+     }
+   }
+   else {
+-#ifdef MOZ_XUL
+-    // if there is no focus, yet a panel is open, focus the first item in
+-    // the panel
+-    nsXULPopupManager* pm = nsXULPopupManager::GetInstance();
+-    if (pm)
+-      popupFrame = pm->GetTopPopup(ePopupTypePanel);
+-#endif
+-    if (popupFrame) {
+-      rootContent = popupFrame->GetContent();
+-      NS_ASSERTION(rootContent, "Popup frame doesn't have a content node");
+-      startContent = rootContent;
+-    }
+-    else {
+       // Otherwise, for content shells, start from the location of the caret.
+       PRInt32 itemType;
+       nsCOMPtr<nsIDocShellTreeItem> shellItem = do_QueryInterface(docShell);
+@@ -2507,6 +2494,20 @@
+           ignoreTabIndex = true;
+         }
+       }
++#ifdef MOZ_XUL
++    else {
++      // if there is no focus, yet a panel is open, focus the first item in
++      // the panel
++      nsXULPopupManager* pm = nsXULPopupManager::GetInstance();
++      if (pm)
++        popupFrame = pm->GetTopPopup(ePopupTypePanel);
++      if (popupFrame) {
++        rootContent = popupFrame->GetContent();
++        NS_ASSERTION(rootContent, "Popup frame doesn't have a content node");
++        startContent = rootContent;
++      }
++    }
++#endif
+ 
+       if (!startContent) {
+         // otherwise, just use the root content as the starting point
+@@ -2514,7 +2515,6 @@
+         NS_ENSURE_TRUE(startContent, NS_OK);
+       }
+     }
+-  }
+ 
+   NS_ASSERTION(startContent, "starting content not set");
+ 
+diff -r 6b26bdffa1bc editor/libeditor/html/nsHTMLDataTransfer.cpp
+--- a/editor/libeditor/html/nsHTMLDataTransfer.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/editor/libeditor/html/nsHTMLDataTransfer.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -1378,14 +1378,43 @@
+         NS_ASSERTION(text.Length() <= (len/2), "Invalid length!");
+         stuffToPaste.Assign(text.get(), len / 2);
+ 
++
++        // Find where the <body> tag starts.
++        nsReadingIterator<PRUnichar> beginbody;
++        nsReadingIterator<PRUnichar> endbody;
++        stuffToPaste.BeginReading(beginbody);
++        stuffToPaste.EndReading(endbody);
++        bool foundbody = CaseInsensitiveFindInReadable(NS_LITERAL_STRING("<body"),
++                                                         beginbody, endbody);
++        nsAutoString realStuffToPaste;
++        if (foundbody) {
++          nsReadingIterator<PRUnichar> endstartbody;
++          stuffToPaste.EndReading(endstartbody);
++          bool foundstartbody = CaseInsensitiveFindInReadable(NS_LITERAL_STRING(">"),
++                                                              endbody, endstartbody);
++          if (!foundstartbody)
++            return NS_ERROR_FAILURE;
++
++          nsReadingIterator<PRUnichar> beginclosebody;
++          nsReadingIterator<PRUnichar> endclosebody;
++          stuffToPaste.BeginReading(beginclosebody);
++          stuffToPaste.EndReading(endclosebody);
++
++          // Find the index before "</body>"
++          bool foundclosehead = CaseInsensitiveFindInReadable(
++                   NS_LITERAL_STRING("</body>"), beginclosebody, endclosebody);
++          realStuffToPaste.Assign(Substring(endstartbody, beginclosebody));
++        }
++        else
++          realStuffToPaste.Assign(stuffToPaste);
+         nsAutoEditBatch beginBatching(this);
+         if (0 == nsCRT::strcmp(bestFlavor, kHTMLMime)) {
+-          rv = DoInsertHTMLWithContext(stuffToPaste,
++          rv = DoInsertHTMLWithContext(realStuffToPaste,
+                                        aContextStr, aInfoStr, flavor,
+                                        aSourceDoc,
+                                        aDestinationNode, aDestOffset,
+                                        aDoDeleteSelection,
+-                                       isSafe);
++                                       true);
+         } else {
+           rv = InsertTextAt(stuffToPaste, aDestinationNode, aDestOffset, aDoDeleteSelection);
+         }
+diff -r 6b26bdffa1bc editor/libeditor/html/nsHTMLEditRules.cpp
+--- a/editor/libeditor/html/nsHTMLEditRules.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/editor/libeditor/html/nsHTMLEditRules.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -456,8 +456,9 @@
+     }
+ 
+     // clean up any empty nodes in the selection
+-    res = RemoveEmptyNodes();
+-    NS_ENSURE_SUCCESS(res, res);
++    // BLUEGRIFFON, fix for bug 261
++    //res = RemoveEmptyNodes();
++    //NS_ENSURE_SUCCESS(res, res);
+ 
+     // attempt to transform any unneeded nbsp's into spaces after doing various operations
+     if ((action == nsEditor::kOpInsertText) || 
+@@ -1381,39 +1382,8 @@
+     // it is to search for both tabs and newlines.
+     if (isPRE || IsPlaintextEditor())
+     {
+-      while (unicodeBuf && (pos != -1) && (pos < (PRInt32)(*inString).Length()))
+-      {
+-        PRInt32 oldPos = pos;
+-        PRInt32 subStrLen;
+-        pos = tString.FindChar(nsCRT::LF, oldPos);
+-
+-        if (pos != -1) 
+-        {
+-          subStrLen = pos - oldPos;
+-          // if first char is newline, then use just it
+-          if (subStrLen == 0)
+-            subStrLen = 1;
+-        }
+-        else
+-        {
+-          subStrLen = tString.Length() - oldPos;
+-          pos = tString.Length();
+-        }
+-
+-        nsDependentSubstring subStr(tString, oldPos, subStrLen);
+-        
+-        // is it a return?
+-        if (subStr.Equals(newlineStr))
+-        {
+-          res = mHTMLEditor->CreateBRImpl(address_of(curNode), &curOffset, address_of(unused), nsIEditor::eNone);
+-          pos++;
+-        }
+-        else
+-        {
+-          res = mHTMLEditor->InsertTextImpl(subStr, address_of(curNode), &curOffset, doc);
+-        }
+-        NS_ENSURE_SUCCESS(res, res);
+-      }
++      res = mHTMLEditor->InsertTextImpl(tString, address_of(curNode), &curOffset, doc);
++      NS_ENSURE_SUCCESS(res, res);
+     }
+     else
+     {
+diff -r 6b26bdffa1bc editor/libeditor/html/nsHTMLEditor.cpp
+--- a/editor/libeditor/html/nsHTMLEditor.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/editor/libeditor/html/nsHTMLEditor.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -299,7 +299,8 @@
+ 
+     if (!IsInteractionAllowed()) {
+       // ignore any errors from this in case the file is missing
+-      AddOverrideStyleSheet(NS_LITERAL_STRING("resource://gre/res/EditorOverride.css"));
++      // BlueGriffon uses its own EditorOverride.css
++      //AddOverrideStyleSheet(NS_LITERAL_STRING("resource://gre/res/EditorOverride.css"));
+     }
+ 
+     nsCOMPtr<nsISelection>selection;
+@@ -2032,7 +2033,21 @@
+   if (bCollapsed || IsTextNode(parent))
+   {
+     // we want to look at the parent and ancestors
+-    nodeToExamine = parent;
++    if (IsTextNode(parent)) {
++      nsCOMPtr<nsIDOMCharacterData> nodeAsText = do_QueryInterface(parent);
++      PRUint32 textLen;
++      nodeAsText->GetLength(&textLen);
++      if (textLen == offset) {
++        nsCOMPtr<nsIDOMNode> nextSibling;
++        res = parent->GetNextSibling(getter_AddRefs(nextSibling));
++        NS_ENSURE_SUCCESS(res, res);
++        nodeToExamine = nextSibling;
++      }
++      else
++        nodeToExamine = parent;
++    }
++    else
++      nodeToExamine = parent;
+   }
+   else
+   {
+@@ -2943,11 +2958,8 @@
+     res = newElement->SetAttribute(NS_LITERAL_STRING("cellspacing"),NS_LITERAL_STRING("2"));
+     NS_ENSURE_SUCCESS(res, res);
+     res = newElement->SetAttribute(NS_LITERAL_STRING("border"),NS_LITERAL_STRING("1"));
+-  } else if (TagName.EqualsLiteral("td"))
+-  {
+-    res = SetAttributeOrEquivalent(newElement, NS_LITERAL_STRING("valign"),
+-                                   NS_LITERAL_STRING("top"), true);
+   }
++
+   // ADD OTHER TAGS HERE
+ 
+   if (NS_SUCCEEDED(res))
+diff -r 6b26bdffa1bc editor/libeditor/html/nsWSRunObject.cpp
+--- a/editor/libeditor/html/nsWSRunObject.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/editor/libeditor/html/nsWSRunObject.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -565,7 +565,7 @@
+   // is there a visible run there or earlier?
+   while (run)
+   {
+-    if (run->mType == eNormalWS)
++    if (run->mType == eNormalWS || run->mType == eTrailingWS)
+     {
+       WSPoint point;
+       GetCharBefore(aNode, aOffset, &point);
+diff -r 6b26bdffa1bc gfx/src/nsColor.cpp
+--- a/gfx/src/nsColor.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/gfx/src/nsColor.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -249,6 +249,27 @@
+   return false;
+ }
+ 
++NS_GFX_(bool) NS_RGBToColorName(nscolor aColor, nsAString& aResult)
++{
++  PRUint8 a = NS_GET_A(aColor);
++  if (a < 255)
++    return false;
++  PRUint8 r = NS_GET_R(aColor);
++  PRUint8 g = NS_GET_G(aColor);
++  PRUint8 b = NS_GET_B(aColor);
++  PRUint32 colorIndex;
++  for (colorIndex = 0; colorIndex < eColorName_COUNT; colorIndex++) {
++    nscolor matchingColor = kColors[colorIndex];
++    if (NS_GET_R(matchingColor) == r
++        && NS_GET_G(matchingColor) == g
++        && NS_GET_B(matchingColor) == b) {
++      aResult.AppendASCII(kColorNames[colorIndex]);
++      return true;
++    }
++  }
++  return false;
++}
++
+ // Macro to blend two colors
+ //
+ // equivalent to target = (bg*(255-fgalpha) + fg*fgalpha)/255
+diff -r 6b26bdffa1bc gfx/src/nsColor.h
+--- a/gfx/src/nsColor.h	Mon Apr 23 10:30:58 2012 +0200
++++ b/gfx/src/nsColor.h	Wed May 23 15:08:42 2012 +0200
+@@ -98,6 +98,10 @@
+ // otherwise return false.
+ NS_GFX_(bool) NS_ColorNameToRGB(const nsAString& aBuf, nscolor* aResult);
+ 
++// Translate a color to a color name. Return true if it parses ok,
++// otherwise return false.
++NS_GFX_(bool) NS_RGBToColorName(nscolor aColor, nsAString& aResult);
++
+ // function to convert from HSL color space to RGB color space
+ // the float parameters are all expected to be in the range 0-1
+ NS_GFX_(nscolor) NS_HSL2RGB(float h, float s, float l);
+diff -r 6b26bdffa1bc layout/style/Loader.cpp
+--- a/layout/style/Loader.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/layout/style/Loader.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -1132,7 +1132,8 @@
+     }
+ #endif
+ 
+-    if (!sheet) {
++    //XXX BlueGriffon force reload of stylesheets each time we need them
++    if (false /*!sheet*/) {
+       // Then our per-document complete sheets.
+       URIAndPrincipalHashKey key(aURI, aLoaderPrincipal);
+ 
+diff -r 6b26bdffa1bc layout/style/nsCSSValue.cpp
+--- a/layout/style/nsCSSValue.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/layout/style/nsCSSValue.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -47,6 +47,7 @@
+ #include "nsStyleUtil.h"
+ #include "CSSCalc.h"
+ #include "nsNetUtil.h"
++#include "nsIPrefService.h"
+ 
+ namespace css = mozilla::css;
+ 
+@@ -891,31 +892,73 @@
+     }
+   }
+   else if (eCSSUnit_Color == unit) {
++    bool outputCssNames = false;
++    nsresult rv;
++    nsCOMPtr<nsIPrefBranch> prefBranch = do_GetService(NS_PREFSERVICE_CONTRACTID, &rv);
++    if (NS_SUCCEEDED(rv) && prefBranch)
++      prefBranch->GetBoolPref("bluegriffon.css.colors.names.enabled", &outputCssNames);
++
+     nscolor color = GetColorValue();
+-    if (color == NS_RGBA(0, 0, 0, 0)) {
+-      // Use the strictest match for 'transparent' so we do correct
+-      // round-tripping of all other rgba() values.
+-      aResult.AppendLiteral("transparent");
+-    } else {
+-      PRUint8 a = NS_GET_A(color);
+-      if (a < 255) {
+-        aResult.AppendLiteral("rgba(");
++    bool foundName = false;
++    if (outputCssNames) {
++      nsAutoString nameColorStr;
++      foundName = NS_RGBToColorName(color, nameColorStr);
++      aResult.Append(nameColorStr);
++    }
++    if (!foundName) {
++      if (color == NS_RGBA(0, 0, 0, 0)) {
++        // Use the strictest match for 'transparent' so we do correct
++        // round-tripping of all other rgba() values.
++        aResult.AppendLiteral("transparent");
+       } else {
+-        aResult.AppendLiteral("rgb(");
++        PRUint8 a = NS_GET_A(color);
++        PRInt32 radix = 10;
++        nsXPIDLCString colorOutputType;
++        prefBranch->GetCharPref("bluegriffon.css.colors.type", getter_Copies(colorOutputType));
++        if (a < 255) {
++          aResult.AppendLiteral("rgba(");
++        } else {
++          if (!PL_strcmp(colorOutputType, "hex")) {
++            radix = 16;
++            aResult.AppendLiteral("#");
++          }
++          else
++            aResult.AppendLiteral("rgb(");
++        }
++
++        if (16 == radix) {
++          nsAutoString rStr, gStr, bStr;
++          rStr.Truncate();
++          gStr.Truncate();
++          bStr.Truncate();
++          rStr.AppendInt(NS_GET_R(color), radix);
++          gStr.AppendInt(NS_GET_G(color), radix);
++          bStr.AppendInt(NS_GET_B(color), radix);
++          if (1 == rStr.Length())
++            aResult.AppendLiteral("0");
++          aResult.Append(rStr);
++          if (1 == gStr.Length())
++            aResult.AppendLiteral("0");
++          aResult.Append(gStr);
++          if (1 == bStr.Length())
++            aResult.AppendLiteral("0");
++          aResult.Append(bStr);
++        }
++        else {
++          NS_NAMED_LITERAL_STRING(comma, ", ");
++
++          aResult.AppendInt(NS_GET_R(color), radix);
++          aResult.Append(comma);
++          aResult.AppendInt(NS_GET_G(color), radix);
++          aResult.Append(comma);
++          aResult.AppendInt(NS_GET_B(color), radix);
++          if (a < 255) {
++            aResult.Append(comma);
++            aResult.AppendFloat(nsStyleUtil::ColorComponentToFloat(a));
++          }
++          aResult.Append(PRUnichar(')'));
++        }
+       }
+-
+-      NS_NAMED_LITERAL_STRING(comma, ", ");
+-
+-      aResult.AppendInt(NS_GET_R(color), 10);
+-      aResult.Append(comma);
+-      aResult.AppendInt(NS_GET_G(color), 10);
+-      aResult.Append(comma);
+-      aResult.AppendInt(NS_GET_B(color), 10);
+-      if (a < 255) {
+-        aResult.Append(comma);
+-        aResult.AppendFloat(nsStyleUtil::ColorComponentToFloat(a));
+-      }
+-      aResult.Append(PRUnichar(')'));
+     }
+   }
+   else if (eCSSUnit_URL == unit || eCSSUnit_Image == unit) {
+diff -r 6b26bdffa1bc parser/htmlparser/public/nsIExpatSink.idl
+--- a/parser/htmlparser/public/nsIExpatSink.idl	Mon Apr 23 10:30:58 2012 +0200
++++ b/parser/htmlparser/public/nsIExpatSink.idl	Wed May 23 15:08:42 2012 +0200
+@@ -44,7 +44,7 @@
+  * by any sink that handles some sort of XML dialect.
+  */
+ 
+-[scriptable, uuid(f61c56b5-ea5b-42b4-ad3c-17416e72e238)]
++[scriptable, uuid(2FFE2C0A-C27C-45FA-8BA4-E504D92A920F)]
+ interface nsIExpatSink : nsISupports 
+ {
+   /**
+@@ -141,5 +141,7 @@
+    */
+   boolean ReportError(in wstring aErrorText,
+                       in wstring aSourceText,
+-                      in nsIScriptError aError);
++                      in nsIScriptError aError,
++                      in unsigned long aLineNumber,
++                      in unsigned long aColNumber);
+ }; 
+diff -r 6b26bdffa1bc parser/htmlparser/src/nsExpatDriver.cpp
+--- a/parser/htmlparser/src/nsExpatDriver.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/parser/htmlparser/src/nsExpatDriver.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -975,7 +975,9 @@
+   if (mSink && shouldReportError) {
+     rv = mSink->ReportError(errorText.get(), 
+                             sourceText.get(), 
+-                            serr, 
++                            serr,
++                            lineNumber,
++                            colNumber,
+                             &shouldReportError);
+     if (NS_FAILED(rv)) {
+       shouldReportError = true;
+diff -r 6b26bdffa1bc parser/xml/src/nsSAXXMLReader.cpp
+--- a/parser/xml/src/nsSAXXMLReader.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/parser/xml/src/nsSAXXMLReader.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -337,6 +337,8 @@
+ nsSAXXMLReader::ReportError(const PRUnichar* aErrorText,
+                             const PRUnichar* aSourceText,
+                             nsIScriptError *aError,
++                            PRUint32 aLineNumber,
++                            PRUint32 aColNumber,
+                             bool *_retval)
+ {
+   NS_PRECONDITION(aError && aSourceText && aErrorText, "Check arguments!!!");
+diff -r 6b26bdffa1bc rdf/base/src/nsRDFContentSink.cpp
+--- a/rdf/base/src/nsRDFContentSink.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/rdf/base/src/nsRDFContentSink.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -579,6 +579,8 @@
+ RDFContentSinkImpl::ReportError(const PRUnichar* aErrorText, 
+                                 const PRUnichar* aSourceText,
+                                 nsIScriptError *aError,
++                                PRUint32 aLineNumber,
++                                PRUint32 aColNumber,
+                                 bool *_retval)
+ {
+   NS_PRECONDITION(aError && aSourceText && aErrorText, "Check arguments!!!");
+diff -r 6b26bdffa1bc toolkit/content/widgets/menu.xml
+--- a/toolkit/content/widgets/menu.xml	Mon Apr 23 10:30:58 2012 +0200
++++ b/toolkit/content/widgets/menu.xml	Wed May 23 15:08:42 2012 +0200
+@@ -224,6 +224,15 @@
+     </content>
+   </binding>
+ 
++  <binding id="menuitem-non-iconic-accel" extends="chrome://global/content/bindings/menu.xml#menuitem">
++    <content>
++      <xul:label class="menu-iconic-text" flex="1" xbl:inherits="value=label,accesskey,crop" crop="right"/>
++      <xul:hbox class="menu-accel-container" anonid="accel">
++        <xul:label class="menu-iconic-accel" xbl:inherits="value=acceltext"/>
++      </xul:hbox>
++    </content>
++  </binding>
++
+   <binding id="menuitem-iconic-noaccel" extends="chrome://global/content/bindings/menu.xml#menuitem">
+     <content>
+       <xul:hbox class="menu-iconic-left" align="center" pack="center"
+diff -r 6b26bdffa1bc toolkit/content/widgets/popup.xml
+--- a/toolkit/content/widgets/popup.xml	Mon Apr 23 10:30:58 2012 +0200
++++ b/toolkit/content/widgets/popup.xml	Wed May 23 15:08:42 2012 +0200
+@@ -396,6 +396,9 @@
+               pack = (Math.abs(popupLeft - anchorLeft) < Math.abs(popupRight - anchorRight)) ? "start" : "end";
+             }
+ 
++            if (this.getAttribute("forcearrow") == "true")
++              pack = "start";
++
+             // In RTL, everything should be inverted.
+             if (window.getComputedStyle(this).direction == "rtl") {
+               pack = (pack == "start") ? "end" : "start";
+@@ -434,9 +437,16 @@
+         else {
+           hideAnchor = true;
+         }
++
++        var panelSide = anchorClass;
++        if (this.getAttribute("forcearrow") == "true") {
++          hideAnchor = false;
++          anchorClass = "top";
++          panelSide = "";
++        }
+         arrow.hidden = hideAnchor;
+         arrow.setAttribute("side", anchorClass);
+-        this.setAttribute("side", anchorClass);
++        this.setAttribute("side", panelSide);
+ 
+         // set fading
+         var fade = this.getAttribute("fade");
+diff -r 6b26bdffa1bc toolkit/content/xul.css
+--- a/toolkit/content/xul.css	Mon Apr 23 10:30:58 2012 +0200
++++ b/toolkit/content/xul.css	Wed May 23 15:08:42 2012 +0200
+@@ -351,6 +351,10 @@
+   -moz-binding: url("chrome://global/content/bindings/menu.xml#menuitem-iconic");
+ }
+ 
++menuitem.menuitem-non-iconic-accel {
++  -moz-binding: url("chrome://global/content/bindings/menu.xml#menuitem-non-iconic-accel");
++}
++
+ menuitem[description] {
+   -moz-binding: url("chrome://global/content/bindings/menu.xml#menuitem-iconic-desc-noaccel");
+ }
+diff -r 6b26bdffa1bc toolkit/mozapps/extensions/content/extensions.js
+--- a/toolkit/mozapps/extensions/content/extensions.js	Mon Apr 23 10:30:58 2012 +0200
++++ b/toolkit/mozapps/extensions/content/extensions.js	Wed May 23 15:08:42 2012 +0200
+@@ -56,6 +56,7 @@
+ const PREF_GETADDONS_CACHE_ID_ENABLED = "extensions.%ID%.getAddons.cache.enabled";
+ const PREF_UI_TYPE_HIDDEN = "extensions.ui.%TYPE%.hidden";
+ const PREF_UI_LASTCATEGORY = "extensions.ui.lastCategory";
++const PREF_CLOSE_ADDONS_MANAGER_ON_ESCAPE = "extensions.closeOnEscape";
+ 
+ const LOADING_MSG_DELAY = 100;
+ 
+@@ -109,6 +110,18 @@
+     return;
+   }
+   document.removeEventListener("load", initialize, true);
++
++  // should we allow the window to close when the user hits the ESC key?
++  let closeOnEscape = false; // default for Firefox 4+
++  try {
++    closeOnEscape = Services.prefs.getBoolPref(PREF_CLOSE_ADDONS_MANAGER_ON_ESCAPE);
++  } catch(e) { }
++  if (!closeOnEscape) {
++    let escapeKeyElt = document.getElementById("escapeKey");
++    if (escapeKeyElt)
++      escapeKeyElt.setAttribute("disabled", "true");
++  }
++
+   gViewController.initialize();
+   gCategories.initialize();
+   gHeader.initialize();
+@@ -2473,7 +2486,7 @@
+ 
+     for (let i = 0; i < this._listBox.itemCount; i++) {
+       let item = this._listBox.childNodes[i];
+-      if (item[prop] == aObj) {
++      if (prop in item && item[prop] == aObj) {
+         this._listBox.removeChild(item);
+         this.showEmptyNotice(this._listBox.itemCount == 0);
+         return;
+diff -r 6b26bdffa1bc toolkit/mozapps/extensions/content/extensions.xul
+--- a/toolkit/mozapps/extensions/content/extensions.xul	Mon Apr 23 10:30:58 2012 +0200
++++ b/toolkit/mozapps/extensions/content/extensions.xul	Wed May 23 15:08:42 2012 +0200
+@@ -66,6 +66,10 @@
+   <script type="application/javascript"
+           src="chrome://global/content/contentAreaUtils.js"/>
+ 
++  <keyset>
++    <key id="escapeKey" keycode="VK_ESCAPE" oncommand="window.close()"/>
++  </keyset>
++
+   <popupset>
+     <!-- menu for an addon item -->
+     <menupopup id="addonitem-popup">
+diff -r 6b26bdffa1bc toolkit/mozapps/handling/nsContentDispatchChooser.js
+--- a/toolkit/mozapps/handling/nsContentDispatchChooser.js	Mon Apr 23 10:30:58 2012 +0200
++++ b/toolkit/mozapps/handling/nsContentDispatchChooser.js	Wed May 23 15:08:42 2012 +0200
+@@ -101,12 +101,44 @@
+     params.appendElement(aURI, false);
+     params.appendElement(aWindowContext, false);
+     
++    // if a modal window is already shown, we need to open the app chooser
++    // as a modal window otherwise it will be unresponsive; bug 687423
++    var wm = Cc["@mozilla.org/appshell/window-mediator;1"].
++               getService(Ci.nsIWindowMediator);
++    var enumerator = wm.getXULWindowEnumerator(null);
++    var inModalState = false;
++    while (!inModalState && enumerator.hasMoreElements()) {
++      var win = enumerator.getNext();
++      var windowDocShell = win.QueryInterface(Ci.nsIXULWindow).docShell;
++  
++      var containedDocShells = windowDocShell.getDocShellEnumerator(
++                                        Ci.nsIDocShellTreeItem.typeChrome,
++                                        Ci.nsIDocShell.ENUMERATE_FORWARDS);
++
++      while (!inModalState && containedDocShells.hasMoreElements()) {
++        // Get the corresponding document for this docshell
++        var childDocShell = containedDocShells.getNext();
++
++        // We don't want it if it's not done loading.
++        if (childDocShell.busyFlags != Ci.nsIDocShell.BUSY_FLAGS_NONE)
++          continue;
++
++        // Ensure that we are only returning true if it is indeed modal
++        var chrome = win.QueryInterface(Ci.nsIInterfaceRequestor).
++                         getInterface(Ci.nsIWebBrowserChrome);
++        if (chrome.isWindowModal()) {
++          inModalState = true;
++        }
++      }
++    }
++
+     var ww = Cc["@mozilla.org/embedcomp/window-watcher;1"].
+              getService(Ci.nsIWindowWatcher);
+     ww.openWindow(window,
+                   CONTENT_HANDLING_URL,
+                   null,
+-                  "chrome,dialog=yes,resizable,centerscreen",
++                  "chrome,dialog=yes,resizable,centerscreen"
++                    + (inModalState ? ",modal" : ""),
+                   params);
+   },
+ 
+diff -r 6b26bdffa1bc widget/cocoa/nsMenuItemX.mm
+--- a/widget/cocoa/nsMenuItemX.mm	Mon Apr 23 10:30:58 2012 +0200
++++ b/widget/cocoa/nsMenuItemX.mm	Wed May 23 15:08:42 2012 +0200
+@@ -447,6 +447,29 @@
+       PRUint8 modifiers = nsMenuUtilsX::GeckoModifiersForNodeAttribute(modifiersStr);
+ 
+       unsigned int macModifiers = nsMenuUtilsX::MacModifiersForGeckoModifiers(modifiers);
++      // If we're empty, try the keyCode instead.
++      if (keyChar.Equals(NS_LITERAL_STRING(" ")) || keyChar.IsEmpty()) {
++
++        keyContent->GetAttr(kNameSpaceID_None, nsGkAtoms::keycode, keyChar);
++
++        if (keyChar.Equals(NS_LITERAL_STRING("VK_F2"))) {
++          unichar ch[1];
++          ch[0] = NSF2FunctionKey;
++          macModifiers |= NSFunctionKeyMask;
++          [mNativeMenuItem setKeyEquivalentModifierMask:macModifiers];
++          [mNativeMenuItem setKeyEquivalent:[NSString stringWithCharacters:ch length:1]];
++          return;
++        }
++        else if (keyChar.Equals(NS_LITERAL_STRING("VK_F4"))) {
++          unichar ch[1];
++          ch[0] = NSF4FunctionKey;
++          macModifiers |= NSFunctionKeyMask;
++          [mNativeMenuItem setKeyEquivalentModifierMask:macModifiers];
++          [mNativeMenuItem setKeyEquivalent:[NSString stringWithCharacters:ch length:1]];
++          return;
++        }
++      }
++
+       [mNativeMenuItem setKeyEquivalentModifierMask:macModifiers];
+ 
+       NSString *keyEquivalent = [[NSString stringWithCharacters:(unichar*)keyChar.get()
+diff -r 6b26bdffa1bc widget/gtk2/nsWindow.cpp
+--- a/widget/gtk2/nsWindow.cpp	Mon Apr 23 10:30:58 2012 +0200
++++ b/widget/gtk2/nsWindow.cpp	Wed May 23 15:08:42 2012 +0200
+@@ -3797,6 +3797,8 @@
+                 gdk_window_add_filter(gtk_widget_get_window(mShell),
+                                       popup_take_focus_filter, NULL); 
+ #endif
++                // XXX BlueGriffon ugly hack to work around bug 662770
++                gtk_window_set_modal(GTK_WINDOW(mShell), TRUE);
+             }
+ 
+             GdkWindowTypeHint gtkTypeHint;

@@ -1,0 +1,21 @@
+<!ENTITY fileHistory.caption "Recent files">
+<!ENTITY fileHistoryDepth.label "Maximum number of files in recent history:">
+<!ENTITY files.label "files">
+<!ENTITY restoreLastSession.label "Restore last session's tabs">
+
+<!ENTITY structureBar.caption "Structure bar">
+
+
+<!ENTITY showIDs.label "Show ID">
+<!ENTITY showClasses.label "Show classes">
+<!ENTITY showLanguage.label "show language">
+<!ENTITY showRoles.label "Show ARIA role">
+
+<!ENTITY spellCheck.caption "Spellchecking">
+<!ENTITY enableSpellCheck.label "Enable real-time spellchecking">
+<!ENTITY numberSuggestions.label "Number of suggestions:">
+
+<!ENTITY tabPosition.label "Position of Tabs">
+<!ENTITY leftTabPosition.label "Left">
+<!ENTITY centerTabPosition.label "Center">
+<!ENTITY rightTabPosition.label "Right">

@@ -1,0 +1,17 @@
+<!ENTITY bgDecidesAll.radio "Automaattinen">
+<!ENTITY bgDecidesAll.desc "Antaa BlueGriffonin itse päättää kuinka lisätä tyylejä ja antaa sen valita puolestani ID:t ja luokat kun tarpeen">
+<!ENTITY prefixPrompt.label "Kirjoita ID:iden ja luokkien etuliite:">
+<!ENTITY iDecide.radio "Manuaalinen">
+<!ENTITY iDecide.desc "Antaa sinun päättää">
+<!ENTITY cssPolicy.caption "CSS-käytäntö">
+
+<!ENTITY browserSupport.caption "Selaintuki">
+<!ENTITY gecko.label "Gecko-pohjaiset selaimet (Firefox, Camino, ...)">
+<!ENTITY webkit.label "WebKit-pohjaiset selaimet (Safari, Chrome, ...)">
+<!ENTITY presto.label "Opera">
+<!ENTITY trident.label "Internet Explorer">
+
+<!ENTITY cssColors.captions "CSS Colors">
+<!ENTITY outputCssColorNames.label "Always try to output CSS 3 color names">
+<!ENTITY rgbColors.label "Prefer rgb(r,v,b) values">
+<!ENTITY hexColors.label "Prefer #rrvvbb values">

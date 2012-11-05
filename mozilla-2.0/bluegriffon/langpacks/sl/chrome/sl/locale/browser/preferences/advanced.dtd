@@ -1,0 +1,137 @@
+<!-- Note: each tab panel must contain unique accesskeys -->
+
+<!ENTITY generalTab.label "Splošno">
+
+<!ENTITY accessibility.label "Dostopnost">
+
+<!ENTITY useCursorNavigation.label "Vselej uporabi tipke na tipkovnici za navigacijo po straneh">
+<!ENTITY useCursorNavigation.accesskey "t">
+<!ENTITY searchStartTyping.label "Ko začnem tipkati, začni iskati">
+<!ENTITY searchStartTyping.accesskey "s">
+<!ENTITY blockAutoRefresh.label "Opozori me, ko se želijo spletne strani preusmeriti ali ponovno naložiti">
+<!ENTITY blockAutoRefresh.accesskey "m">
+
+<!ENTITY browsing.label "Brskanje">
+
+<!ENTITY useAutoScroll.label "Uporabljaj samodrsenje">
+<!ENTITY useAutoScroll.accesskey "s">
+<!ENTITY useSmoothScrolling.label "Uporabljaj gladko drsenje">
+<!ENTITY useSmoothScrolling.accesskey "g">
+<!ENTITY allowHWAccel.label              "Uporabljaj strojno pospeševanje, ko je na voljo">
+<!ENTITY allowHWAccel.accesskey          "p">
+<!ENTITY checkSpelling.label "Preverjaj črkovanje besed, medtem ko pišem">
+<!ENTITY checkSpelling.accesskey "b">
+<!ENTITY doNotTrack.label                "Spletnim stranem sporoči, naj mi ne sledijo">
+<!ENTITY doNotTrack.accesskey            "d">
+
+<!ENTITY systemDefaults.label "Privzete vrednosti">
+<!--XXX-->
+<!ENTITY alwaysCheckDefault.label "Ob zagonu vedno preveri, ali je &brandShortName; privzeti brskalnik">
+<!ENTITY alwaysCheckDefault.accesskey "v">
+<!ENTITY checkNow.label "Preveri zdaj">
+<!ENTITY checkNow.accesskey "E">
+<!ENTITY submitCrashes.label             "Pošlji poročila o sesutju">
+<!ENTITY submitCrashes.accesskey         "S">
+
+<!ENTITY networkTab.label "Mreža">
+
+<!ENTITY connection.label "Povezava">
+
+<!ENTITY connectionDesc.label "Določite, kako naj se &brandShortName; poveže na internet.">
+<!ENTITY connectionSettings.label "Nastavitve ...">
+<!ENTITY connectionSettings.accesskey "n">
+
+<!ENTITY offlineStorage.label "Shramba brez povezave">
+
+<!-- LOCALIZATION NOTE:
+  The entities limitCacheSizeBefore.label and limitCacheSizeAfter.label appear on a single
+  line in preferences as follows:
+
+  &limitCacheSizeBefore.label [textbox for cache size in MB] &limitCacheSizeAfter.label;
+-->
+<!ENTITY limitCacheSizeBefore.label      "Omeji velikost predpomnilnika na">
+<!ENTITY limitCacheSizeBefore.accesskey  "l">
+<!ENTITY limitCacheSizeAfter.label       "MB">
+<!ENTITY clearCacheNow.label "Počisti zdaj">
+<!ENTITY clearCacheNow.accesskey "O">
+<!ENTITY overrideSmartCacheSize.label    "Prezri samodejno upravljanje predpomnilnika">
+<!ENTITY overrideSmartCacheSize.accesskey "o">
+
+<!ENTITY updateTab.label "Posodobitev">
+
+<!ENTITY autoCheck.label "Samodejno preverjaj, če obstajajo posodobitve za:">
+<!ENTITY enableAppUpdate.label "&brandShortName;">
+<!ENTITY enableAppUpdate.accesskey "F">
+<!ENTITY enableAddonsUpdate2.label       "Dodatke">
+<!ENTITY enableAddonsUpdate2.accesskey   "D">
+<!ENTITY enableSearchUpdate.label "Iskalnike">
+<!ENTITY enableSearchUpdate.accesskey "I">
+<!ENTITY whenUpdatesFound.label "Če obstajajo posodobitve za &brandShortName;:">
+<!ENTITY askMe.label "me vprašaj, kaj storiti">
+<!ENTITY askMe.accesskey "k">
+<!ENTITY modeAutomatic.label "samodejno prenesi in namesti posodobitev">
+<!ENTITY modeAutomatic.accesskey "p">
+<!ENTITY modeAutoAddonWarn.label "opozori me, če bo to onemogočilo nameščene razširitve in teme">
+<!ENTITY modeAutoAddonWarn.accesskey "O">
+<!ENTITY updateHistory.label "Pokaži zgodovino posodobitev">
+<!ENTITY updateHistory.accesskey "z">
+
+<!ENTITY offlineNotify.label "Opozori me, ko želi spletna stran shraniti podatke za delo brez povezave">
+<!ENTITY offlineNotify.accesskey "T">
+<!ENTITY offlineNotifyExceptions.label "Izjeme ...">
+<!ENTITY offlineNotifyExceptions.accesskey "i">
+
+<!ENTITY offlineAppsList.label "Naslednje spletne strani so shranile podatke za delo brez povezave:">
+<!ENTITY offlineAppsList.height "7em">
+<!ENTITY offlineAppsListRemove.label "Odstrani ...">
+<!ENTITY offlineAppsListRemove.accesskey "R">
+<!ENTITY offlineAppRemove.confirm "Odstrani ">
+
+<!ENTITY encryptionTab.label "Šifriranje">
+
+<!ENTITY protocols.label "Protokoli">
+<!ENTITY useSSL3.label "Uporabljaj SSL 3.0">
+<!ENTITY useSSL3.accesskey "3">
+<!ENTITY useTLS1.label "Uporabljaj TLS 1.0">
+<!ENTITY useTLS1.accesskey "1">
+<!ENTITY certificates.label "Digitalna potrdila">
+<!ENTITY certSelection.description "Ko strežnik zahteva moje osebno digitalno potrdilo:">
+<!ENTITY certs.auto "ga izberi samodejno">
+<!ENTITY certs.auto.accesskey "s">
+<!ENTITY certs.ask "me vsakokrat vprašaj">
+<!ENTITY certs.ask.accesskey "k">
+<!ENTITY viewCerts.label "Preglej digitalna potrdila">
+<!ENTITY viewCerts.accesskey "p">
+<!ENTITY viewCRLs.label "Preklicana potrdila">
+<!ENTITY viewCRLs.accesskey "r">
+<!ENTITY verify2.label "Preverjanje">
+<!ENTITY verify2.accesskey "V">
+<!ENTITY viewSecurityDevices.label "Varnostne naprave">
+<!ENTITY viewSecurityDevices.accesskey "v">
+
+<!ENTITY clearOfflineAppCacheNow.accesskey "N">
+<!ENTITY clearOfflineAppCacheNow.label   "Clear Now">
+
+<!ENTITY httpCache.label                 "Cached Web Content">
+
+<!ENTITY offlineAppsList2.label          "The following websites are allowed to store data for offline use:">
+
+<!ENTITY offlineStorage2.label           "Offline Web Content and User Data">
+<!ENTITY submitTelemetry.accesskey       "P">
+<!ENTITY submitTelemetry.label           "Submit performance data">
+
+<!ENTITY updateApp.label                 "&brandShortName; updates:">
+<!ENTITY updateAuto.accesskey            "A">
+<!ENTITY updateAuto.label                "Automatically install updates (recommended: improved security)">
+<!ENTITY updateAutoAddonWarn.accesskey   "W">
+
+<!ENTITY updateAutoAddonWarn.label       "Warn me if this will disable any of my add-ons">
+<!ENTITY updateCheck.accesskey           "C">
+<!ENTITY updateCheck.label               "Check for updates, but let me choose whether to install them">
+<!ENTITY updateManual.accesskey          "N">
+<!ENTITY updateManual.label              "Never check for updates (not recommended: security risk)">
+
+<!ENTITY updateOthers.label              "Automatically update:">
+<!ENTITY useService.accesskey            "b">
+
+<!ENTITY useService.label                "Use a background service to install updates">

@@ -1,0 +1,24 @@
+<!ENTITY mozilla.title
+'Mozilla 之书， 11:9'>
+
+<!ENTITY mozilla.manifestoUrl
+'http://www.mozilla.org/about/manifesto.zh-cn.html'>
+
+<!ENTITY mozilla.aboutUrl
+'http://wiki.mozilla.org/About:mozilla'>
+
+<!ENTITY mozilla.quote2
+'玛门沉睡了。<em>野兽重生</em>遍布了世界，变得无所不在。它们宣布了一个新的时代，并<em>舍身</em>为<em>灵巧的狐狸</em>带来了火焰。正如<em><a href="&mozilla.manifestoUrl;">神圣之言</a></em>和野兽孩子的<em><a href="&mozilla.aboutUrl;">话语</a></em>所承诺的那样，它们正依照自己的形象创造一个新世界。玛门醒来了，它四下观望，周围已经<em>尽是</em>野兽的追随者了！'>
+
+<!ENTITY mozilla.from
+'from <strong>The Book of Mozilla,</strong> 11:9<br/><small>(10th Edition)</small>'>
+
+
+<!ENTITY mozilla.quote
+'Mammon slept. And the <em>beast reborn</em> spread over the earth and its numbers
+grew legion. And they proclaimed the times and <em>sacrificed</em> crops unto the
+fire, with the <em>cunning of foxes</em>. And they built a new world in their own
+image as promised by the <em><a href="http://www.mozilla.org/about/mozilla-manifesto.html">
+sacred words</a></em>, and <em><a href="http://wiki.mozilla.org/About:mozilla">spoke
+</a></em> of the beast with their children. Mammon awoke, and lo! it was
+<em>naught</em> but a follower.'>

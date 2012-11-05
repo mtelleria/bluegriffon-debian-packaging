@@ -1,0 +1,31 @@
+locale autoconfig sv-SE chrome/sv-SE/locale/sv-SE/autoconfig/
+locale global sv-SE chrome/sv-SE/locale/sv-SE/global/
+locale necko sv-SE chrome/sv-SE/locale/sv-SE/necko/
+locale alerts sv-SE chrome/sv-SE/locale/sv-SE/alerts/
+override chrome://global/locale/netError.dtd chrome://browser/locale/netError.dtd
+locale browser-region sv-SE chrome/sv-SE/locale/browser-region/
+locale global-platform sv-SE chrome/sv-SE/locale/sv-SE/global-platform/
+locale webapprt sv-SE chrome/sv-SE/locale/webapprt/
+locale testpilot sv-SE chrome/sv-SE/locale/feedback/
+locale cookie sv-SE chrome/sv-SE/locale/sv-SE/cookie/
+override chrome://global/locale/appstrings.properties chrome://browser/locale/appstrings.properties
+locale weave sv-SE chrome/sv-SE/locale/sv-SE/
+locale global-region sv-SE chrome/sv-SE/locale/sv-SE/global-region/
+locale pipnss sv-SE chrome/sv-SE/locale/sv-SE/pipnss/
+locale mozapps sv-SE chrome/sv-SE/locale/sv-SE/mozapps/
+override chrome://mozapps/locale/downloads/settingsChange.dtd chrome://browser/locale/downloads/settingsChange.dtd
+locale places sv-SE chrome/sv-SE/locale/sv-SE/places/
+locale pippki sv-SE chrome/sv-SE/locale/sv-SE/pippki/
+locale branding sv-SE chrome/sv-SE/locale/branding/
+locale passwordmgr sv-SE chrome/sv-SE/locale/sv-SE/passwordmgr/
+locale browser sv-SE chrome/sv-SE/locale/browser/
+locale bluegriffon sv-SE base/locale/bluegriffon/
+locale branding sv-SE base/locale/branding/
+locale fs sv-SE extensions/fs/
+locale gfd sv-SE extensions/gfd/
+locale cssproperties sv-SE sidebars/cssproperties/
+locale domexplorer sv-SE sidebars/domexplorer/
+locale scripteditor sv-SE sidebars/scripteditor/
+locale stylesheets sv-SE sidebars/stylesheets/
+locale tipoftheday sv-SE extensions/tipoftheday/
+

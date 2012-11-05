@@ -1,0 +1,18 @@
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - ***** END LICENSE BLOCK ***** -->
+
+<!ENTITY advancedJSDialog.title         "הגדרות JavaScript מתקדמות">
+<!ENTITY window.width                   "20em">
+
+<!ENTITY allowScripts.label             "אפשר לתסריטים לבצע את הפעולות הבאות:">
+
+<!ENTITY moveResizeWindows.label        "הזזה או שינוי גודל חלונות קיימים">
+<!ENTITY moveResizeWindows.accesskey    "ה">
+<!ENTITY raiseLowerWindows.label        "העברת חלון לקידמה או לרקע">
+<!ENTITY raiseLowerWindows.accesskey    "ר">
+<!ENTITY disableContextMenus.label      "ביטול או החלפת תפריטי הקשר">
+<!ENTITY disableContextMenus.accesskey  "ב">
+
+<!ENTITY moveResizePopupWindows.accesskey "M">
+
+<!ENTITY moveResizePopupWindows.label     "Move or resize popup windows">
