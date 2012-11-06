@@ -1,11 +1,3 @@
-bluegriffon (1.5.2-mte1) UNRELEASED; urgency=low
-
-  * Non-maintainer upload.
-  * rebuild for wheezy
-  * New upstream release
-
- -- Miguel Telleria de Esteban <miguel@mtelleria.com>  Mon, 05 Nov 2012 20:36:55 +0100
-
 bluegriffon (1.1.1-1~getdeb1) lucid; urgency=low
 
   * Initial release (LP: #820730)
