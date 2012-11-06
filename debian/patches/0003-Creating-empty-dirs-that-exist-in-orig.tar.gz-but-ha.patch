@@ -1,7 +1,7 @@
 From: Miguel Telleria de Esteban <miguel@mtelleria.com>
 Date: Tue, 6 Nov 2012 12:55:22 +0100
-Subject: =?UTF-8?q?Creating=20empty=20dirs=20that=20exist=20in=20orig.tar.gz?=
- =?UTF-8?q?=20but=20have=20been=20ignored=20by=0Agit?=
+Subject: Creating empty dirs that exist in orig.tar.gz but have been ignored
+ by git
 
 ---
  0 files changed

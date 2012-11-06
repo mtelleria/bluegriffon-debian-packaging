@@ -1,0 +1,99 @@
+From: Miguel Telleria de Esteban <miguel@mtelleria.com>
+Date: Tue, 6 Nov 2012 13:04:12 +0100
+Subject: Using mozconfig.ubuntu instead of from 1.1.1 version
+
+---
+ mozilla-2.0/.mozconfig |   74 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 59 insertions(+), 15 deletions(-)
+
+diff --git a/mozilla-2.0/.mozconfig b/mozilla-2.0/.mozconfig
+index 80e99ab..8536eb5 100644
+--- a/mozilla-2.0/.mozconfig
++++ b/mozilla-2.0/.mozconfig
+@@ -1,27 +1,71 @@
+-# CHANGE FOLLOWING LINE ACCORDING TO YOUR WISHES
++# sh
++# Build configuration script for Mac OS X
++#
++# See http://www.mozilla.org/build/unix.html for build instructions.
++#
++
++##############################
++# Assuming you're using 1.06 and want a universal build
++##############################
++
++##############################
++# tweak the following line according to your wishes
++# warning, the directory must exist in the filesystem
++##############################
+ mk_add_options MOZ_OBJDIR=../bluegriffon
+-mk_add_options MOZ_MAKE_FLAGS="-s -j4"
++#mk_add_options MOZ_OBJDIR=/Users/daniel/bin/debug
++#mk_add_options AUTOCONF=autoconf-2.13
+ 
+-ac_add_options --enable-application=bluegriffon
++##############################
++# tweak the following according to your wishes
++##############################
+ ac_add_options --disable-debug
+ ac_add_options --enable-optimize
++ac_add_options --enable-strip
++#ac_add_options --enable-debug
++#ac_add_options --disable-optimize
++
++##############################
++# I build on a 8-cpu machine ; comment out or adapt to your own case
++##############################
++mk_add_options MOZ_MAKE_FLAGS="-j8"
+ 
+-ac_add_options --disable-installer
++##############################
++# DO NOT MODIFY BELOW THIS LINE
++##############################
++ac_add_options --enable-application=bluegriffon
++mk_add_options MOZ_TOOLKIT_SEARCH=
++
++
++ac_add_options --disable-cpp-exceptions
++#ac_add_options --enable-system-cairo
++ac_add_options --enable-libnotify
++ac_add_options --enable-system-lcms
++ac_add_options --disable-necko-wifi
++ac_add_options --with-system-jpeg
++ac_add_options --with-system-zlib
++ac_add_options --with-system-bz2
++ac_add_options --with-pthreads
+ ac_add_options --disable-activex
+ ac_add_options --disable-activex-scripting
+ ac_add_options --disable-tests
+ ac_add_options --disable-airbag
+ ac_add_options --enable-places
+ ac_add_options --enable-storage
+-ac_add_options --enable-shared
+-ac_add_options --disable-static
+-ac_add_options --prefix=../bluegriffon-install
+-ac_add_options --with-user-appdir=.bluegriffon
+-# bug 491774. crashreporter won't build in cross compile
++ac_add_options --disable-shared
++ac_add_options --enable-static
++ac_add_options --disable-mochitest
++ac_add_options --enable-installer
++ac_add_options --enable-xinerama
++ac_add_options --enable-default-toolkit=cairo-gtk2
++ac_add_options --disable-xprint
++ac_add_options --enable-pango
++ac_add_options --enable-svg
++ac_add_options --enable-canvas
++ac_add_options --disable-javaxpcom
+ ac_add_options --disable-crashreporter
+-RANLIB=ranlib
+-AR=ar
+-AS=$CC
+-LD=ld
+-STRIP="strip -x -S"
+-CROSS_COMPILE=1
++ac_add_options --enable-safe-browsing
++ac_add_options --enable-gio
++ac_add_options --disable-gnomevfs
++ac_add_options --enable-webm
++
