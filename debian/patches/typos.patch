@@ -1,9 +1,9 @@
-Just typos.
-Index: bluegriffon-1.1.1/mozilla-2.0/db/sqlite3/src/sqlite3.c
+a refresh of the typos patch from 1.1.1 version
+Index: bluegriffon-1.5.2/mozilla-2.0/db/sqlite3/src/sqlite3.c
 ===================================================================
---- bluegriffon-1.1.1.orig/mozilla-2.0/db/sqlite3/src/sqlite3.c	2011-08-04 16:28:09.534133275 +0200
-+++ bluegriffon-1.1.1/mozilla-2.0/db/sqlite3/src/sqlite3.c	2011-08-04 16:28:39.834133286 +0200
-@@ -357,7 +357,7 @@
+--- bluegriffon-1.5.2.orig/mozilla-2.0/db/sqlite3/src/sqlite3.c	2012-11-05 20:08:59.000000000 +0100
++++ bluegriffon-1.5.2/mozilla-2.0/db/sqlite3/src/sqlite3.c	2012-11-06 10:11:56.000000000 +0100
+@@ -350,7 +350,7 @@
  ** The SQLITE_THREADSAFE macro must be defined as 0, 1, or 2.
  ** 0 means mutexes are permanently disable and the library is never
  ** threadsafe.  1 means the library is serialized which is the highest
@@ -12,36 +12,23 @@ Index: bluegriffon-1.1.1/mozilla-2.0/db/sqlite3/src/sqlite3.c
  ** threads can use SQLite as long as no two threads try to use the same
  ** database connection at the same time.
  **
-Index: bluegriffon-1.1.1/mozilla-2.0/gfx/angle/src/compiler/InfoSink.cpp
+Index: bluegriffon-1.5.2/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp
 ===================================================================
---- bluegriffon-1.1.1.orig/mozilla-2.0/gfx/angle/src/compiler/InfoSink.cpp	2011-08-04 16:31:48.554133350 +0200
-+++ bluegriffon-1.1.1/mozilla-2.0/gfx/angle/src/compiler/InfoSink.cpp	2011-08-04 16:32:10.074133356 +0200
-@@ -26,7 +26,7 @@
-             sink.append("NOTE: ");
-             break;
-         default:
--            sink.append("UNKOWN ERROR: ");
-+            sink.append("UNKNOWN ERROR: ");
-             break;
-     }
- }
-Index: bluegriffon-1.1.1/mozilla-2.0/gfx/thebes/GLContextProviderOSMesa.cpp
-===================================================================
---- bluegriffon-1.1.1.orig/mozilla-2.0/gfx/thebes/GLContextProviderOSMesa.cpp	2011-08-04 16:29:07.304133294 +0200
-+++ bluegriffon-1.1.1/mozilla-2.0/gfx/thebes/GLContextProviderOSMesa.cpp	2011-08-04 16:29:52.544133309 +0200
-@@ -144,7 +144,7 @@
+--- bluegriffon-1.5.2.orig/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp	2012-11-05 20:09:00.000000000 +0100
++++ bluegriffon-1.5.2/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp	2012-11-06 10:16:16.000000000 +0100
+@@ -131,7 +131,7 @@
      };
  
-     if (!LibrarySymbolLoader::LoadSymbols(mOSMesaLibrary, &symbols[0])) {
+     if (!GLLibraryLoader::LoadSymbols(mOSMesaLibrary, &symbols[0])) {
 -        LogMessage("Couldn't find required entry points in OSMesa libary");
 +        LogMessage("Couldn't find required entry points in OSMesa library");
-         return PR_FALSE;
+         return false;
      }
  
-Index: bluegriffon-1.1.1/mozilla-2.0/modules/freetype2/vms_make.com
+Index: bluegriffon-1.5.2/mozilla-2.0/modules/freetype2/vms_make.com
 ===================================================================
---- bluegriffon-1.1.1.orig/mozilla-2.0/modules/freetype2/vms_make.com	2011-08-04 16:30:04.334133313 +0200
-+++ bluegriffon-1.1.1/mozilla-2.0/modules/freetype2/vms_make.com	2011-08-04 16:30:27.904133321 +0200
+--- bluegriffon-1.5.2.orig/mozilla-2.0/modules/freetype2/vms_make.com	2012-11-05 20:09:02.000000000 +0100
++++ bluegriffon-1.5.2/mozilla-2.0/modules/freetype2/vms_make.com	2012-11-06 10:17:14.000000000 +0100
 @@ -1096,7 +1096,7 @@
  !
  ZLIB # sys$library:libz.olb # sys$library: # zlib.h # FT_CONFIG_OPTION_SYSTEM_ZLIB
