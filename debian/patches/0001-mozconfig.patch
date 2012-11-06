@@ -1,8 +1,18 @@
+From: Miguel Telleria de Esteban <miguel@mtelleria.com>
+Date: Tue, 6 Nov 2012 12:37:58 +0100
+Subject: mozconfig
+
 Configuration file for bluegriffon.
-Index: bluegriffon-1.1.1/mozilla-2.0/.mozconfig
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ bluegriffon-1.1.1/mozilla-2.0/.mozconfig	2011-08-04 15:31:05.114132130 +0200
+---
+ mozilla-2.0/.mozconfig |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+ create mode 100644 mozilla-2.0/.mozconfig
+
+diff --git a/mozilla-2.0/.mozconfig b/mozilla-2.0/.mozconfig
+new file mode 100644
+index 0000000..80e99ab
+--- /dev/null
++++ b/mozilla-2.0/.mozconfig
 @@ -0,0 +1,27 @@
 +# CHANGE FOLLOWING LINE ACCORDING TO YOUR WISHES
 +mk_add_options MOZ_OBJDIR=../bluegriffon

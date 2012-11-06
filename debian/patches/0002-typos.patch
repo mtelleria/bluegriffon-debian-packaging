@@ -1,8 +1,18 @@
+From: Miguel Telleria de Esteban <miguel@mtelleria.com>
+Date: Tue, 6 Nov 2012 12:37:59 +0100
+Subject: typos
+
 a refresh of the typos patch from 1.1.1 version
-Index: bluegriffon-1.5.2/mozilla-2.0/db/sqlite3/src/sqlite3.c
-===================================================================
---- bluegriffon-1.5.2.orig/mozilla-2.0/db/sqlite3/src/sqlite3.c	2012-11-05 20:08:59.000000000 +0100
-+++ bluegriffon-1.5.2/mozilla-2.0/db/sqlite3/src/sqlite3.c	2012-11-06 10:11:56.000000000 +0100
+---
+ mozilla-2.0/db/sqlite3/src/sqlite3.c           |    2 +-
+ mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp |    2 +-
+ mozilla-2.0/modules/freetype2/vms_make.com     |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/mozilla-2.0/db/sqlite3/src/sqlite3.c b/mozilla-2.0/db/sqlite3/src/sqlite3.c
+index 6090bba..c39bfbc 100644
+--- a/mozilla-2.0/db/sqlite3/src/sqlite3.c
++++ b/mozilla-2.0/db/sqlite3/src/sqlite3.c
 @@ -350,7 +350,7 @@
  ** The SQLITE_THREADSAFE macro must be defined as 0, 1, or 2.
  ** 0 means mutexes are permanently disable and the library is never
@@ -12,11 +22,11 @@ Index: bluegriffon-1.5.2/mozilla-2.0/db/sqlite3/src/sqlite3.c
  ** threads can use SQLite as long as no two threads try to use the same
  ** database connection at the same time.
  **
-Index: bluegriffon-1.5.2/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp
-===================================================================
---- bluegriffon-1.5.2.orig/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp	2012-11-05 20:09:00.000000000 +0100
-+++ bluegriffon-1.5.2/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp	2012-11-06 10:16:16.000000000 +0100
-@@ -131,7 +131,7 @@
+diff --git a/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp b/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp
+index f4e027d..11fc338 100644
+--- a/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp
++++ b/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp
+@@ -131,7 +131,7 @@ OSMesaLibrary::EnsureInitialized()
      };
  
      if (!GLLibraryLoader::LoadSymbols(mOSMesaLibrary, &symbols[0])) {
@@ -25,11 +35,11 @@ Index: bluegriffon-1.5.2/mozilla-2.0/gfx/gl/GLContextProviderOSMesa.cpp
          return false;
      }
  
-Index: bluegriffon-1.5.2/mozilla-2.0/modules/freetype2/vms_make.com
-===================================================================
---- bluegriffon-1.5.2.orig/mozilla-2.0/modules/freetype2/vms_make.com	2012-11-05 20:09:02.000000000 +0100
-+++ bluegriffon-1.5.2/mozilla-2.0/modules/freetype2/vms_make.com	2012-11-06 10:17:14.000000000 +0100
-@@ -1096,7 +1096,7 @@
+diff --git a/mozilla-2.0/modules/freetype2/vms_make.com b/mozilla-2.0/modules/freetype2/vms_make.com
+index 1aa83e7..da5b537 100644
+--- a/mozilla-2.0/modules/freetype2/vms_make.com
++++ b/mozilla-2.0/modules/freetype2/vms_make.com
+@@ -1096,7 +1096,7 @@ $   type/out=vmslib.dat sys$input
  !
  ZLIB # sys$library:libz.olb # sys$library: # zlib.h # FT_CONFIG_OPTION_SYSTEM_ZLIB
  $   write sys$output "New driver file vmslib.dat created."
