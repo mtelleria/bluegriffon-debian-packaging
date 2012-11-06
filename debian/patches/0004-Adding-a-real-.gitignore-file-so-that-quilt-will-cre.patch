@@ -1,0 +1,88 @@
+From: Miguel Telleria de Esteban <miguel@mtelleria.com>
+Date: Tue, 6 Nov 2012 20:21:41 +0100
+Subject: Adding a real .gitignore file so that quilt will create a real patch
+
+---
+ mozilla-2.0/bluegriffon/base/locale/.gitignore                    |    1 +
+ mozilla-2.0/bluegriffon/extensions/fs/locale/.gitignore           |    1 +
+ mozilla-2.0/bluegriffon/extensions/gfd/locale/.gitignore          |    1 +
+ mozilla-2.0/bluegriffon/extensions/scripteditor/locale/.gitignore |    1 +
+ mozilla-2.0/bluegriffon/extensions/tipoftheday/locale/.gitignore  |    1 +
+ mozilla-2.0/bluegriffon/sidebars/cssproperties/locale/.gitignore  |    1 +
+ mozilla-2.0/bluegriffon/sidebars/domexplorer/locale/.gitignore    |    1 +
+ mozilla-2.0/bluegriffon/sidebars/scripteditor/locale/.gitignore   |    1 +
+ mozilla-2.0/bluegriffon/sidebars/stylesheets/locale/.gitignore    |    1 +
+ 9 files changed, 9 insertions(+)
+ create mode 100644 mozilla-2.0/bluegriffon/base/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/extensions/fs/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/extensions/gfd/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/extensions/scripteditor/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/extensions/tipoftheday/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/sidebars/cssproperties/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/sidebars/domexplorer/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/sidebars/scripteditor/locale/.gitignore
+ create mode 100644 mozilla-2.0/bluegriffon/sidebars/stylesheets/locale/.gitignore
+
+diff --git a/mozilla-2.0/bluegriffon/base/locale/.gitignore b/mozilla-2.0/bluegriffon/base/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/base/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/extensions/fs/locale/.gitignore b/mozilla-2.0/bluegriffon/extensions/fs/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/extensions/fs/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/extensions/gfd/locale/.gitignore b/mozilla-2.0/bluegriffon/extensions/gfd/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/extensions/gfd/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/extensions/scripteditor/locale/.gitignore b/mozilla-2.0/bluegriffon/extensions/scripteditor/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/extensions/scripteditor/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/extensions/tipoftheday/locale/.gitignore b/mozilla-2.0/bluegriffon/extensions/tipoftheday/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/extensions/tipoftheday/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/sidebars/cssproperties/locale/.gitignore b/mozilla-2.0/bluegriffon/sidebars/cssproperties/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/sidebars/cssproperties/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/sidebars/domexplorer/locale/.gitignore b/mozilla-2.0/bluegriffon/sidebars/domexplorer/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/sidebars/domexplorer/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/sidebars/scripteditor/locale/.gitignore b/mozilla-2.0/bluegriffon/sidebars/scripteditor/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/sidebars/scripteditor/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR
+diff --git a/mozilla-2.0/bluegriffon/sidebars/stylesheets/locale/.gitignore b/mozilla-2.0/bluegriffon/sidebars/stylesheets/locale/.gitignore
+new file mode 100644
+index 0000000..73062e3
+--- /dev/null
++++ b/mozilla-2.0/bluegriffon/sidebars/stylesheets/locale/.gitignore
+@@ -0,0 +1 @@
++# DO NOT DELETE THIS DIR

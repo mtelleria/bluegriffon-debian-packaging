@@ -1,3 +1,4 @@
 0001-mozconfig.patch
 0002-typos.patch
-0004-Using-mozconfig.ubuntu-instead-of-from-1.1.1-version.patch
+0003-Using-mozconfig.ubuntu-instead-of-from-1.1.1-version.patch
+0004-Adding-a-real-.gitignore-file-so-that-quilt-will-cre.patch
