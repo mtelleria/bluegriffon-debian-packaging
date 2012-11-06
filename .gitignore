@@ -1,3 +1,5 @@
 .pc
 .hg
 .svn
+mozilla-2.0/tools/profiler/libunwind/src/autom4te.cache/
+*~
