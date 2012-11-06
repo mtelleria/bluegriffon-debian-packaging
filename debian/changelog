@@ -1,3 +1,12 @@
+bluegriffon (1.5.2-1~1.gbp661451) UNRELEASED; urgency=low
+
+  ** SNAPSHOT build @661451e0e7723cf09b159eede6cab938de386447 **
+
+  * Updating metadata
+  * adjusting typos.patch from 1.1.1
+
+ -- Miguel Telleria de Esteban <miguel@mtelleria.com>  Tue, 06 Nov 2012 10:32:21 +0100
+
 bluegriffon (1.1.1-1~getdeb1) lucid; urgency=low
 
   * Initial release (LP: #820730)
