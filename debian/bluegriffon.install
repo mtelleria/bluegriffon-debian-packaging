@@ -1,6 +1,2 @@
-bluegriffon/dist/bin/bluegriffon-bin	usr/lib/bluegriffon
-bluegriffon/dist/bin/plugin-container	usr/lib/bluegriffon
-bluegriffon/dist/bin/xpcshell		usr/lib/bluegriffon
-debian/scripts/bluegriffon		usr/bin
 debian/bluegriffon.png			usr/share/pixmaps
 debian/bluegriffon.desktop		usr/share/applications
