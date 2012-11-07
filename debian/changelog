@@ -1,6 +1,6 @@
-bluegriffon (1.5.2-1~3.gbp4609a8) UNRELEASED; urgency=low
+bluegriffon (1.5.2-1~4.gbp97a1ed) UNRELEASED; urgency=low
 
-  ** SNAPSHOT build @4609a8aab01aded31f5903bce991529bfbbb2026 **
+  ** SNAPSHOT build @97a1ed60b40a610cf95175c7babf983cf99c36bc **
 
   * Updating metadata
   * metadata .gitignore
@@ -25,8 +25,23 @@ bluegriffon (1.5.2-1~3.gbp4609a8) UNRELEASED; urgency=low
   * second snapshot try
   * Removing the empty .gitignore patch
   * remaking the .gitignore patch with some real content now
+  * Updating metadata
+  * metadata .gitignore
+  * adjusting typos.patch from 1.1.1
+  * backtracking debian/changelog to favor git-dch from gbp
+  * snapshot release
+  * Removing autom4te.cache and .mozconfig~ from tools/profiler
+  * updating .gitignore for autom4te.cache and *~ files
+  * Unapply patches after build
+  * Adding empty dirs removed by git
+  * Updating mozconfig from mozconfig.ubuntu in bluegriffon SVN
+  * second snapshot try
+  * Removing the empty .gitignore patch
+  * remaking the .gitignore patch with some real content now
+  * snapshot rebuild
+  * major restructuring dropping bluegriffon-data among others
 
- -- Miguel Telleria de Esteban <miguel@mtelleria.com>  Tue, 06 Nov 2012 20:24:56 +0100
+ -- Miguel Telleria de Esteban <miguel@mtelleria.com>  Wed, 07 Nov 2012 11:25:02 +0100
 
 bluegriffon (1.1.1-1~getdeb1) lucid; urgency=low
 
