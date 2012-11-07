@@ -2,7 +2,7 @@ Format: http://dep.debian.net/deps/dep5
 Upstream-Name: bluegriffon
 Source: http://sources.disruptive-innovations.com/bluegriffon/tags/
 
-Files: *
+Files: mozilla-2.0/bluegriffon
 Copyright: 2011 Daniel Glazman
 License: Mozilla Public License, GPL-2+, LGPL-2+
  The contents of this file are subject to the Mozilla Public License
@@ -14,6 +14,7 @@ License: Mozilla Public License, GPL-2+, LGPL-2+
  basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
  License for the specific language governing rights and limitations
  under the License.
+Comment:  Current tag 1.5.2
 
 License: LGPL-2+
  This library is free software; you can redistribute it and/or
@@ -48,3 +49,21 @@ License: GPL-2+
  .
  On Debian systems, the complete text of the GNU General
  Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
+
+Files: mozilla-2.0/*
+Copyright: 2012 Mozilla Foundation
+License: 2012, Mozilla Public License, GPL-2+, LGPL-2+
+ The contents of this file are subject to the Mozilla Public License
+ Version 1.1 (the "License"); you may not use this file except in
+ compliance with the License. You may obtain a copy of the License at
+ http://www.mozilla.org/MPL/
+ .
+ Software distributed under the License is distributed on an "AS IS"
+ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ License for the specific language governing rights and limitations
+ under the License.
+Comment: These are the mozilla-central sources obtained through mercurial
+ hg clone http://hg.mozilla.org/mozilla-central mozilla-2.0
+ selecting changeset specified in bluegriffon/config/mozilla_central_revision
+ hg checkout 6b26bdffa1bc
+ then patching the bluegriffon/config/content.patch
