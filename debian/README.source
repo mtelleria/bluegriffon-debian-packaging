@@ -1,0 +1,99 @@
+To obtain this source distribution I have mixed two workflows:
+
+-  Building instructions given in bluegriffon web:
+   http://bluegriffon.org/pages/Build-BlueGriffon
+
+-  Approach taken in the 1.1.1 package done by Christoph Korn
+   christoph.korn AT getdeb.net
+   http://archive.getdeb.net/ubuntu (currently down)
+   http://www.getdeb.net/software/BlueGriffon
+
+These are the steps that I follow to PREPARE THE SOURCES
+
+1. Install the mozilla development environment (a.k.a.) build
+   requirements.   
+   These are shown in the package build-deps (SQUEEZE users:  use
+   yasm-1.0.1 from squeeze backports).
+
+2. Download mozilla-central from Mozilla mercurial repository.
+
+   hg clone http://hg.mozilla.org/mozilla-central mozilla-2.0
+
+3. Download bluegriffon and its locales from Disruptive Innovations
+   svn respository.
+
+   Here I use the tags but you may try with the trunk directly.
+   svn checkout http://sources.disruptive-innovations.com/bluegriffon/tags/1.5.2/ bluegriffon
+   svn co http://sources.disruptive-innovations.com/bluegriffon-l10n/tags/1.5.2/ locales
+
+4. Find out the mercurial changeset used by bluegriffon development
+   (for the patching needed below).
+
+   cat bluegriffon/config/mozilla_central_revision
+
+5. Checkdown that changeset from the mercurial repo.
+
+   cd mozilla-2.0
+   hg checkout <revision_nr>
+
+6. Apply the content-patch to that revision.
+
+   patch -p1 < ../bluegriffon/config/content_patch
+
+7. Commit the changes (if you wish) locally to mercurial.
+
+   hg commit -u <your email> -m <bluegriffon patch>
+
+8. Move bluegriffon and bluegriffon locales to mozilla source tree.
+
+   mv ../bluegriffon .
+   cd bluegriffon/
+   mv ../../locales .
+
+9. Create a backup of the RAW DATA if you wish (Note:  this will not be the
+   orig.tar.gz yet).
+
+10. Remove version control directories .hg and .svn
+
+    find . -name ".hg"
+    find . -name ".hg" | xargs rm -rf
+
+    find . -name ".svn"
+    find . -name ".svn" | xargs rm -rf
+
+11. (If you plan to use git-buildpackage) mark empty directories now
+    with .gitignore.
+
+12. Now pack everything in a single .orig.tar.gz
+
+13.  Use git-import-orig to add it to a gbp repository.
+
+Steps followed to BUILD:
+
+1.  Set an appropriate .mozconfig file
+    I do this with a debian/patch in which I have a parallel relative
+    directory for object file tree MOZ_OBJDIR=../bluegriffon .
+
+3.  Then I just issue:
+
+    make -f clean
+
+    (Duration ~ 30min)
+
+Steps followed to INSTALL:
+
+Upstream binaries consist in a direct copy of the MOZ_OBJDIR/dist/bin
+directory and its contents in a lib/bluegriffon directory.  The
+program is executed through the generated bluegriffon POSIX script
+(that makes use of mozilla-central run-mozilla.sh file).
+
+Debian policy (and the 1.1.1 package) require a separation between:
+
+-  usr/lib/bluegriffon:  with executables and libraries
+-  usr/share/bluegriffon:  with icons, .jar and other stuff
+
+So far I have placed everything in usr/lib/bluegriffon.
+
+To execute I use the generated bluegriffon POSIX script with a symlink
+to usr/bin
+
