@@ -281,6 +281,7 @@ function _installZipEntry(aZipReader, aZipEntry, aDestination)
   {
     file.append(dirs[end]);
     aZipReader.extract(aZipEntry, file);
+    file.permissions = 0644;
   }
 }
 

@@ -3,7 +3,8 @@
 VERSION=$1
 BG_VERSION=$2
 
-LOCALES="cs de es-ES fi fr he hu it ja ko nl pl sl sr sv-SE zh-CN zh-TW"
+#LOCALES="cs de es-ES fi fr he hu it ja ko nl pl sl sr sv-SE zh-CN zh-TW"
+LOCALES="gl"
 
 R_VERSION=`echo $VERSION | sed -e "s/\./\\\\\./" | sed -e "s/\n//"`
 R_BG_VERSION=`echo $BG_VERSION | sed -e "s/\./\\\\\./" | sed -e "s/\n//"`

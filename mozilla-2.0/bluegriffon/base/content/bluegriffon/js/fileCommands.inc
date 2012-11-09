@@ -54,6 +54,7 @@ var cmdSave =
                      EditorUtils.getCurrentDocumentMimeType());
         }
         else {
+          EditorUtils.cleanup();
           result = FileUtils.saveDocument(
                      UrlUtils.isUrlOfBlankDocument(EditorUtils.getDocumentUrl()),
                      false,
@@ -98,6 +99,7 @@ var cmdSaveAs =
                      EditorUtils.getCurrentDocumentMimeType());
         }
         else {
+          EditorUtils.cleanup();
           result = FileUtils.saveDocument(
                      true,
                      false,

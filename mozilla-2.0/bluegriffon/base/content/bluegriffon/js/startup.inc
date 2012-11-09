@@ -64,7 +64,8 @@ function Startup()
   setTimeout(LoadLastTabs, 1000);
   BlueGriffonQuitHelper.init();
 
-  document.getElementById("tipoftheday").launch(null);
+  if (document.getElementById("tipoftheday"))
+    document.getElementById("tipoftheday").launch(null);
 
   AddonManager.getAddonByID("{f13b157f-b174-47e7-a34d-4815ddfdfeb8}",
     function(addon) { if(addon) document.getElementById("venkmanMenuitem").hidden = false; } );

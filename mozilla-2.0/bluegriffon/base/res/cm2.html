@@ -28,6 +28,14 @@
   <script src="cm2/css.js" type="text/javascript" ></script>
   <script src="cm2/htmlmixed.js" type="text/javascript" ></script>
 
+  <script src="cm2/jquery.min.js"></script>
+  <script src="cm2/poptags.js"></script>
+  <script src="cm2/pophtmlmixed.js"></script>
+  
+  <script src="cm2/code-completion.js"></script>
+  <script src="cm2/css-completion.js"></script>
+  <script src="cm2/html-completion.js"></script>
+
   <link rel="stylesheet" id="theme" type="text/css" href="cm2/cobalt.css" />
   <link rel="stylesheet" id="theme" type="text/css" href="cm2/eclipse.css" />
   <link rel="stylesheet" id="theme" type="text/css" href="cm2/elegant.css" />
@@ -36,6 +44,7 @@
   <link rel="stylesheet" id="theme" type="text/css" href="cm2/neat.css" />
   <link rel="stylesheet" id="theme" type="text/css" href="cm2/night.css" />
   <link rel="stylesheet" id="theme" type="text/css" href="cm2/rubyblue.css" />
+  <link rel="stylesheet"            type="text/css" href="cm2/code-completion.css">  
 </head>
 <body>
 
@@ -75,12 +84,31 @@
         matchBrackets: true,
         onGutterClick: foldFunc,
         onChange: changeFunc,
-        mode: "text/html",
+        mode: "pophtmlmixed",
         onCursorActivity: function() {
           gEditor.setLineClass(hlLine, null);
           hlLine = gEditor.setLineClass(gEditor.getCursor().line, "activeline");
         }
       });
+      var htmlCompletion = new CodeCompletion(gEditor, new HtmlCompletion());
+      var cssCompletion = new CodeCompletion(gEditor, new CssCompletion({local: true}));
+      gEditor.setOption("onKeyEvent", function(cm, e) {
+          var cursor = cm.getCursor();
+          var token = cm.getTokenAt(cursor);
+          switch (token.state.mode) {
+            case "html":
+              return htmlCompletion.handleKeyEvent(cm, e);
+            case "css":
+              return cssCompletion.handleKeyEvent(cm, e);
+
+            default: break;              
+          }
+          return false;
+      });
+      /*gEditor.setOption("onKeyEvent", function(cm, e) {
+          return cssCompletion.handleKeyEvent(cm, e);
+      });*/
+
       var hlLine = gEditor.setLineClass(0, "activeline");
       useTheme(gTheme);
   };

@@ -28,4 +28,4 @@ locale domexplorer zh-CN sidebars/domexplorer/
 locale scripteditor zh-CN sidebars/scripteditor/
 locale stylesheets zh-CN sidebars/stylesheets/
 locale tipoftheday zh-CN extensions/tipoftheday/
-
+locale op1 zh-CN extensions/op1/

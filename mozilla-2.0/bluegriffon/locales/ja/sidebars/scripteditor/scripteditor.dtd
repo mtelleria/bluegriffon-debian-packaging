@@ -1,10 +1,10 @@
-<!ENTITY editScript.label "Edit Script">
-<!ENTITY moveUp.label "Move Up">
-<!ENTITY moveDown.label "Move down">
+<!ENTITY editScript.label "スクリプトを編集">
+<!ENTITY moveUp.label "上へ移動">
+<!ENTITY moveDown.label "下へ移動">
 
-<!ENTITY addExternalScript.label "Add external script">
-<!ENTITY addEmbeddedScript.label "Add embedded script">
+<!ENTITY addExternalScript.label "外部スクリプトを追加">
+<!ENTITY addEmbeddedScript.label "埋め込みスクリプトを追加">
 
-<!ENTITY newScript.tooltip "Add a script">
-<!ENTITY removeScript.tooltip "Delete a script">
-<!ENTITY modifyScript.tooltip "Modify a script">
+<!ENTITY newScript.tooltip "スクリプトを追加">
+<!ENTITY removeScript.tooltip "スクリプトを削除">
+<!ENTITY modifyScript.tooltip "スクリプトを変更">

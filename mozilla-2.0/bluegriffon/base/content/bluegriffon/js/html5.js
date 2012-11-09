@@ -48,7 +48,6 @@ var HTML5Helper = {
     {tag: 'img',        label: "img",         block: false, empty: true,  command: 'insertImage' },
     {tag: 'input',      label: "input",       block: false, empty: true,  command: 'insertInput' },
     {tag: 'ins',        label: "ins",         block: false, empty: false, command: null },
-    {tag: 'ins',        label: "ins",         block: false, empty: false, command: null },
     {tag: 'kbd',        label: "kbd",         block: false, empty: false, command: null },
     {tag: 'keygen',     label: "keygen",      block: false, empty: true,  command: 'insertKeygen' },
     {tag: 'label',      label: "label",       block: true,  empty: false, command: 'insertLabel' },

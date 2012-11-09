@@ -478,11 +478,11 @@ var FileUtils = {
   
         // grab the file name
         if (docURI.fileExtension.toLowerCase() == "php")
-          return unescape(docURI.fileName);
+          return decodeURI(docURI.fileName);
 
         var url = docURI.fileBaseName;
         if (url)
-          return unescape(url+extension);
+          return decodeURI(url+extension);
       } catch(e) {}
     } 
   

@@ -4011,11 +4011,13 @@ CSSParser.prototype = {
       s += " { ";
       token = this.getToken(true, false);
       while (token.isNotNull()) {
-        if (token.isComment() && this.mPreserveComments) {
-          s += " " + token.value;
-          var comment = new jscsspComment();
-          comment.parsedCssText = token.value;
-          mediaRule.cssRules.push(comment);
+        if (token.isComment()) {
+          if (this.mPreserveComments) {
+            s += " " + token.value;
+            var comment = new jscsspComment();
+            comment.parsedCssText = token.value;
+            mediaRule.cssRules.push(comment);
+          }
         } else if (token.isSymbol("}")) {
           valid = true;
           break;
@@ -4312,7 +4314,7 @@ CSSParser.prototype = {
       if (token.isIdent() || token.isSymbol("*")) {
         s += token.value;
         var nextToken = this.getToken(true, true);
-        if (token.isSymbol("|")) {
+        if (nextToken.isSymbol("|")) {
           s += "|";
           token = this.getToken(true, true);
           if (token.isIdent())

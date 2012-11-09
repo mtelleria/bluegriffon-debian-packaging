@@ -8,15 +8,15 @@
   <Description about="urn:mozilla:install-manifest"
                em:id="langpack-en-US@bluegriffon.org"
                em:name="English (US) Language Pack"
-               em:version="13.0.1.5.2"
+               em:version="13.0.1.5.2.99.20120524"
                em:type="8"
                em:creator="mozilla.org">
 
     <em:targetApplication>
       <Description>
         <em:id>bluegriffon@disruptive-innovations.com</em:id>
-        <em:minVersion>1.5.2</em:minVersion>
-        <em:maxVersion>1.5.2</em:maxVersion>
+        <em:minVersion>1.5.2.99.20120524</em:minVersion>
+        <em:maxVersion>1.5.2.99.20120524</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>

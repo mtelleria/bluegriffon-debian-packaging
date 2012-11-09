@@ -110,6 +110,8 @@
                   case "filterHTML":    this.fp.appendFilters(this.nsIFP.filterHTML); break;
                   case "filterText":    this.fp.appendFilters(this.nsIFP.filterText); break;
                   case "filterImages":  this.fp.appendFilters(this.nsIFP.filterImages); break;
+                  case "filterAudio":   this.fp.appendFilters(this.nsIFP.filterAudio); break;
+                  case "filterVideo":   this.fp.appendFilters(this.nsIFP.filterVideo); break;
                   default:              this.fp.appendFilter(f, f);
                 }
               }

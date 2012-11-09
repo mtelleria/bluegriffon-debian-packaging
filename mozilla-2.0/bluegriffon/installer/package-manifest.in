@@ -359,6 +359,12 @@
 @BINPATH@/distribution/extensions/fullscreen@bluegriffon.com/chrome/fullscreen.jar
 @BINPATH@/distribution/extensions/fullscreen@bluegriffon.com/chrome.manifest
 @BINPATH@/distribution/extensions/fullscreen@bluegriffon.com/install.rdf
+@BINPATH@/distribution/extensions/op1@bluegriffon.com
+@BINPATH@/distribution/extensions/op1@bluegriffon.com/chrome
+@BINPATH@/distribution/extensions/op1@bluegriffon.com/chrome/op1-en-US.jar
+@BINPATH@/distribution/extensions/op1@bluegriffon.com/chrome/op1.jar
+@BINPATH@/distribution/extensions/op1@bluegriffon.com/chrome.manifest
+@BINPATH@/distribution/extensions/op1@bluegriffon.com/install.rdf
 @BINPATH@/distribution/extensions/gfd@bluegriffon.com
 @BINPATH@/distribution/extensions/gfd@bluegriffon.com/chrome
 @BINPATH@/distribution/extensions/gfd@bluegriffon.com/chrome/gfd-en-US.jar

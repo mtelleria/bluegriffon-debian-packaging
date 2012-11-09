@@ -164,7 +164,7 @@
 
 <!ENTITY ParagraphSelect.tooltip "段落書式を選択">
 <!-- Shared in Paragraph, and Toolbar menulist -->
-<!ENTITY bodyTextCmd.label "Body Text">
+<!ENTITY bodyTextCmd.label "本文">
 <!ENTITY paragraphParagraphCmd.label "段落">  
 <!ENTITY heading1Cmd.label "見出し 1">
 <!ENTITY heading2Cmd.label "見出し 2">
@@ -287,7 +287,7 @@
 <!ENTITY saveCmd.label "保存">
 <!ENTITY saveToolbarCmd.tooltip "ファイルを保存">
 <!ENTITY filesave.key "s">
-<!ENTITY saveAsCmd.label "名前を付けてで保存...">
+<!ENTITY saveAsCmd.label "名前を付けて保存...">
 <!ENTITY filesaveas.key "a">
 
 <!ENTITY undoCmd.label "元に戻す">
@@ -301,7 +301,7 @@
 <!ENTITY copyCmd.accesskey "C">
 <!ENTITY pasteCmd.label "貼り付け">
 <!ENTITY pasteCmd.accesskey "P">
-<!ENTITY pasteNoFormatting.label "Paste without Formatting">
+<!ENTITY pasteNoFormatting.label "書式なし貼り付け">
 <!ENTITY pasteNoFormatting.accesskey "f">
 <!ENTITY deleteCmd.label "削除">
 <!ENTITY deleteCmd.accesskey "D">
@@ -467,15 +467,15 @@
 <!ENTITY html5Element.label "HTML 5 Element">
 <!ENTITY addonsMenu.label "アドオン">
 
-<!ENTITY listProperties.label "List Properties">
+<!ENTITY listProperties.label "リストのプロパティ">
 
-<!ENTITY tableOfContents.label "Table of Contents">
+<!ENTITY tableOfContents.label "目次">
 
 <!ENTITY select.label "選択...">
-<!ENTITY parentElement.label "Parent Element">
-<!ENTITY firstChild.label "First Child">
-<!ENTITY nextSibling.label "Next Sibling">
-<!ENTITY previousSibling.label "Previous Sibling">
+<!ENTITY parentElement.label "親要素">
+<!ENTITY firstChild.label "先頭の子要素">
+<!ENTITY nextSibling.label "次の兄弟要素">
+<!ENTITY previousSibling.label "前の兄弟要素">
 <!ENTITY tableCaption.label "表の説明文">
 
 <!ENTITY lookForUpdates.label "ソフトウェアの更新を確認">
@@ -485,9 +485,9 @@
 
 <!ENTITY newWindow.label	"新しいウィンドウで開く">
 
-<!ENTITY editComment.label "Edit the HTML comment:">
-<!ENTITY editPHP.label "Edit the PHP instructions:">
-<!ENTITY editPI.label "Edit the Processing Instruction:">
-<!ENTITY targetPI.label "Target:">
-<!ENTITY dataPI.label "Data:">
-<!ENTITY commentOrPHPOrPI.label "Comments/PHP/Processing Instructions">
+<!ENTITY editComment.label "HTML コメントを編集:">
+<!ENTITY editPHP.label "PHP コードを編集:">
+<!ENTITY editPI.label "処理命令を編集:">
+<!ENTITY targetPI.label "対象:">
+<!ENTITY dataPI.label "データ:">
+<!ENTITY commentOrPHPOrPI.label "コメント/PHP/処理命令">

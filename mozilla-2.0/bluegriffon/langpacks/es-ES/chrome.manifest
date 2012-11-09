@@ -28,4 +28,4 @@ locale domexplorer es-ES sidebars/domexplorer/
 locale scripteditor es-ES sidebars/scripteditor/
 locale stylesheets es-ES sidebars/stylesheets/
 locale tipoftheday es-ES extensions/tipoftheday/
-
+locale op1 es-ES extensions/op1/

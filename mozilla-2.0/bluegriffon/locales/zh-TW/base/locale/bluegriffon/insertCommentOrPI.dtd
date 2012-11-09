@@ -1,8 +1,8 @@
-<!ENTITY window.title "HTMLµù¸Ñ¡BPHP©MPI">
+<!ENTITY window.title "HTMLè¨»è§£ã€PHPå’ŒPI">
 
-<!ENTITY comment.label "µù¸Ñ">
+<!ENTITY comment.label "è¨»è§£">
 <!ENTITY php.label "PHP">
 <!ENTITY pi.label "PI">
 
-<!ENTITY target.label "¥Ø¼Ð:">
-<!ENTITY data.label "¤é´Á:">
+<!ENTITY target.label "ç›®æ¨™:">
+<!ENTITY data.label "æ—¥æœŸ:">

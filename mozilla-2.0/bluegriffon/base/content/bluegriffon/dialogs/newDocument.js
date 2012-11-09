@@ -56,6 +56,32 @@ function InitDialog()
     gDialog.charsetMenupopup.appendChild(menuitem);
   }
   gDialog.charsetMenulist.value = "utf-8";
+
+  switch (GetPrefs().getCharPref("bluegriffon.defaults.doctype")) {
+    case "kHTML5":
+      gDialog.languageRadiogroup.value = "HTML5";
+      break;
+    case "kXHTML5":
+      gDialog.languageRadiogroup.value = "XHTML5";
+      break;
+    case "kHTML_STRICT":
+      gDialog.languageRadiogroup.value = "HTML";
+      gDialog.doctypeRadiogroup.value = "STRICT";
+      break;
+    case "kHTML_TRANSITIONAL":
+      gDialog.languageRadiogroup.value = "HTML";
+      gDialog.doctypeRadiogroup.value = "TRANSITIONAL";
+      break;
+    case "kXHTML_STRICT":
+      gDialog.languageRadiogroup.value = "XHTML";
+      gDialog.doctypeRadiogroup.value = "STRICT";
+      break;
+    case "kXHTML_TRANSITIONAL":
+      gDialog.languageRadiogroup.value = "XHTML";
+      gDialog.doctypeRadiogroup.value = "TRANSITIONAL";
+      break;
+  }
+  onDoctypeToggle(gDialog.languageRadiogroup);
 }
 
 function onAccept()

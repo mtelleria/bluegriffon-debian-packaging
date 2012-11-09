@@ -25,7 +25,7 @@
 <!ENTITY textDecoration.label "装飾:">
 <!ENTITY textDecorationUnderline.label "下線">
 <!ENTITY textDecorationOverline.label "上線">
-<!ENTITY textDecorationNone.label "None">
+<!ENTITY textDecorationNone.label "なし">
 <!ENTITY textDecorationLinethrough.label "取消線">
 
 <!ENTITY textTransform.label "大文字小文字:">
@@ -192,9 +192,9 @@
 <!ENTITY scrollOverlow.label "スクロール バーを表示する">
 <!ENTITY autoOverlow.label "自動">
 
-<!ENTITY textOverflow.label "Text Overflow:">
-<!ENTITY clipTextOverflow.label "Clip">
-<!ENTITY ellipsisTextOverflow.label "Ellipsis">
+<!ENTITY textOverflow.label "はみ出したテキスト:">
+<!ENTITY clipTextOverflow.label "切り取り">
+<!ENTITY ellipsisTextOverflow.label "省略記号を表示">
 
 <!ENTITY position.label "位置:">
 <!ENTITY staticPosition.label "静的">

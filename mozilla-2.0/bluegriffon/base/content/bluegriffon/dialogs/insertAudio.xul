@@ -29,7 +29,7 @@
     <filepickerbutton id="urlFilepickerbutton"
                       control="urlTextbox"
                       mode="0"
-                      filters="filterAll"
+                      filters="filterAudio"
                       oncommand="LoadAudioFile(); CheckURL('urlTextbox', 'relativeURLCheckbox')"
                       title="&selectFile.label;"/>
   </hbox>
