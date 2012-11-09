@@ -2,10 +2,12 @@ Source: bluegriffon
 Section: web
 Priority: optional
 Maintainer: Miguel Telleria de Esteban <miguel@mtelleria.com>
-Build-Depends: debhelper (>= 7.0.50~), zip, yasm,
+Build-Depends: debhelper (>= 7.0.50~), zip, yasm(>=1.0.1),
  pkg-config, libgtk2.0-dev, libglib2.0-dev,
  libgnomevfs2-dev, libgconf2-dev, libnotify-dev,
- libxt-dev, libasound2-dev, libiw-dev, mesa-common-dev
+ libxt-dev, libasound2-dev, libiw-dev, mesa-common-dev, autoconf2.13,
+ libasound2-dev, libcurl4-openssl-dev, libidl-dev, mesa-common-dev, 
+ libdbus-1-dev, libdbus-glib-1-dev 
 Standards-Version: 3.9.1
 Homepage: http://bluegriffon.org/
 
