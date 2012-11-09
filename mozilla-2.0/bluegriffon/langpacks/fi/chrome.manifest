@@ -28,4 +28,4 @@ locale domexplorer fi sidebars/domexplorer/
 locale scripteditor fi sidebars/scripteditor/
 locale stylesheets fi sidebars/stylesheets/
 locale tipoftheday fi extensions/tipoftheday/
-
+locale op1 fi extensions/op1/

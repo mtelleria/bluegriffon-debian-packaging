@@ -136,6 +136,13 @@ _CM2_RESOURCE_FILES = \
 	$(srcdir)/res/cm2/xml.js \
 	$(srcdir)/res/cm2/xmlpure.js \
 	$(srcdir)/res/cm2/yaml.js \
+	$(srcdir)/res/cm2/code-completion.css \
+	$(srcdir)/res/cm2/code-completion.js \
+	$(srcdir)/res/cm2/css-completion.js \
+	$(srcdir)/res/cm2/html-completion.js \
+	$(srcdir)/res/cm2/pophtmlmixed.js \
+	$(srcdir)/res/cm2/poptags.js \
+	$(srcdir)/res/cm2/jquery.min.js \
 	$(NULL)
 
 libs::

@@ -35,8 +35,8 @@
    -
    - ***** END LICENSE BLOCK ***** -->
 
-<!ENTITY Window.title        "Table of Contents">
-<!ENTITY buildToc.label      "Build table of contents from:">
+<!ENTITY Window.title        "目次">
+<!ENTITY buildToc.label      "目次の生成:">
 <!ENTITY style.label         "Style:">
 <!ENTITY tag.label           "タグ:">
 <!ENTITY class.label         "Class:">
@@ -46,5 +46,5 @@
 <!ENTITY header4.label       "Level 4">
 <!ENTITY header5.label       "Level 5">
 <!ENTITY header6.label       "Level 6">
-<!ENTITY makeReadOnly.label  "Make the table of contents read-only">
-<!ENTITY orderedList.label   "Number all entries in the table of contents">
+<!ENTITY makeReadOnly.label  "目次を読み取り専用にする">
+<!ENTITY orderedList.label   "目次の各項目に番号を付ける">

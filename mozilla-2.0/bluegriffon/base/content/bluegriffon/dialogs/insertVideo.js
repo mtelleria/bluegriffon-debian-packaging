@@ -63,7 +63,11 @@ function CheckURL(aTextboxId, aCheckboxId)
   var url = gDialog[aTextboxId].value;
   if (url) {
     gDialog[aCheckboxId].disabled = !(gDocUrlScheme && gDocUrlScheme != "resource");
-    gDialog[aCheckboxId].checked = (url == UrlUtils.makeRelativeUrl(url));
+    if (url != UrlUtils.makeRelativeUrl(url)) {
+      MakeRelativeUrl(aTextboxId, aCheckboxId);
+    }
+    else
+      gDialog[aCheckboxId].checked = true;
   }
   else {
     gDialog[aCheckboxId].checked = false;
@@ -281,12 +285,27 @@ function SavePosterAsFile()
     
     persist.persistFlags = Components.interfaces.nsIWebBrowserPersist.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
     persist.persistFlags |= Components.interfaces.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-    
-    // save the canvas data to the file
+
+    persist.progressListener = {
+      onLocationChange: function() {},
+      onProgressChange: function() {},
+      onSecurityChange: function() {},
+      onStatusChange:   function() {},
+      onStateChange:    function(aWebProgress, aRequest, aStateFlags, aStatus) {
+        if (aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
+        setTimeout(function() {
+          // save the canvas data to the file
+          gDialog.urlPosterTextbox.value = fp.fileURL.spec;
+          var imageCache = Components.classes["@mozilla.org/image/cache;1"]
+                                     .getService(Components.interfaces.imgICache);
+          imageCache.removeEntry(fp.fileURL);
+          gDialog.previewPoster.setAttribute("src","");
+          LoadPosterFile();
+          CheckURL('urlPosterTextbox', 'relativeURLPosterCheckbox');
+        }, 200);
+      }
+    };
     persist.saveURI(source, null, null, null, null, file);
-    gDialog.urlPosterTextbox.value = fp.fileURL.spec;
-    LoadPosterFile();
-    CheckURL('urlPosterTextbox', 'relativeURLPosterCheckbox');
   }
   catch(e) {alert(e)}
 }

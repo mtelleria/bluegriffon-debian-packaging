@@ -122,7 +122,7 @@ pref("bluegriffon.updates.check.enabled", true);
 pref("bluegriffon.updates.frequency", "launch");
 
 pref("html5.enable", true);
-pref("bluegriffon.defaults.doctype", "kXHTML5");
+pref("bluegriffon.defaults.doctype", "kHTML5");
 pref("media.autoplay.enabled", false);
 
 pref("bluegriffon.defaults.forceLF", false);

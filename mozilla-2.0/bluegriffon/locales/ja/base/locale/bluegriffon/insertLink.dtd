@@ -7,13 +7,13 @@
 <!ENTITY isMail.label "これはメールアドレスです">
 <!ENTITY relativeUrl.label "URL をページに対して相対にする">
 
-<!ENTITY windowTarget.label "Window target">
-<!ENTITY openIn.label "Open the link in:">
-<!ENTITY topTarget.label "same window, without frames">
-<!ENTITY blankTarget.label "a new window">
-<!ENTITY parentTarget.label "the parent frame">
-<!ENTITY selfTarget.label "the current frame">
-<!ENTITY otherTarget.label "the frame named...">
+<!ENTITY windowTarget.label "対象ウィンドウ">
+<!ENTITY openIn.label "リンクを開く場所:">
+<!ENTITY topTarget.label "現在のウィンドウ（フレームなし）">
+<!ENTITY blankTarget.label "新規ウィンドウ">
+<!ENTITY parentTarget.label "親フレーム">
+<!ENTITY selfTarget.label "現在のフレーム">
+<!ENTITY otherTarget.label "フレーム名...">
 
-<!ENTITY title.caption "Advisory Title">
-<!ENTITY title.label "Title:">
+<!ENTITY title.caption "タイトル情報">
+<!ENTITY title.label "タイトル:">

@@ -35,6 +35,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://app/modules/urlHelper.jsm");
+
 const nsIFilePicker = Components.interfaces.nsIFilePicker;
 
 var gDialog = {};
@@ -54,6 +56,10 @@ function Startup()
 #ifndef XP_MACOSX
   CenterDialogOnOpener();
 #endif
+
+  var url = UrlUtils.getURLFromClipboard();
+  if (url)
+    gDialog.input.value = url;
 }
 
 function onChooseFile()
@@ -69,7 +75,7 @@ function onChooseFile()
 
     if (fp.show() == nsIFilePicker.returnOK && fp.fileURL.spec && fp.fileURL.spec.length > 0)
     {
-      gDialog.input.value = fp.fileURL.spec;
+      gDialog.input.value = decodeURI(fp.fileURL.spec);
       // give focus to the OK buton
       document.documentElement.getButton("accept").focus();
     }

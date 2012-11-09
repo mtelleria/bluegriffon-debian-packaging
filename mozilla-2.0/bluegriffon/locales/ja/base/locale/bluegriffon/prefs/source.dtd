@@ -1,9 +1,9 @@
 <!ENTITY source.label "ソース表示">
 <!ENTITY theme.label "テーマ:">
 
-<!ENTITY serialization.label "Serialization">
+<!ENTITY serialization.label "シリアライゼーション">
 
-<!ENTITY forceLF.label "Force Unix-style carriage returns (LF)">
+<!ENTITY forceLF.label "Unix 形式の改行コード (LF) に統一する">
 
 <!ENTITY specialChars.description      "エンティティとして扱う文字:">
 <!-- ENTITY basicEncoding.label           "Only &amp; &lt; &gt; ' and non-breakable whitespace" -->
@@ -13,7 +13,7 @@
 <!ENTITY allEntitiesEncoding.label     "ASCII 以外のすべての文字に &amp;#..; 表記を使う">
 
 <!ENTITY autoIndent.label "オートインデント">
-<!ENTITY wrap.label "Wrap long lines">
-<!ENTITY wrapColumn.label "when lines go beyond column">
-<!ENTITY noWrapForLanguages.label "Don't wrap documents in the following languages:">
-<!ENTITY langExclusionExample.label "(ex: ja-JP, zh-TW)">
+<!ENTITY wrap.label "長い行を折り返す">
+<!ENTITY wrapColumn.label "折り返しの基準桁（文字数）">
+<!ENTITY noWrapForLanguages.label "次の言語には折り返しを適用しない:">
+<!ENTITY langExclusionExample.label "(例: ja-JP, zh-TW)">

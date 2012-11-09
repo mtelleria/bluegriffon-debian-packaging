@@ -40,7 +40,7 @@
             <filepickerbutton id="urlFilepickerbutton"
                               control="urlTextbox"
                               mode="0"
-                              filters="filterAll"
+                              filters="filterVideo"
                               oncommand="LoadVideoFile(); CheckURL('urlTextbox', 'relativeURLCheckbox')"
                               title="&selectFile.label;"/>
           </hbox>
@@ -112,7 +112,7 @@
             <filepickerbutton id="urlPosterFilepickerbutton"
                               control="urlPosterTextbox"
                               mode="0"
-                              filters="filterAll"
+                              filters="filterImages"
                               oncommand="LoadPosterFile(); CheckURL('urlPosterTextbox', 'relativeURLPosterCheckbox')"
                               title="&selectFile.label;"/>
           </hbox>

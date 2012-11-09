@@ -142,6 +142,11 @@ protected:
     if (mFlags & SkipInvisibleContent) {
       nsCOMPtr<nsIContent> content = do_QueryInterface(aNode);
       if (content) {
+        nsIAtom *tag = content->Tag();
+        if (tag == nsGkAtoms::script
+            || tag == nsGkAtoms::style) {
+          return true;
+        }
         nsIFrame* frame = content->GetPrimaryFrame();
         if (!frame) {
           if (aNode->IsNodeOfType(nsINode::eTEXT)) {

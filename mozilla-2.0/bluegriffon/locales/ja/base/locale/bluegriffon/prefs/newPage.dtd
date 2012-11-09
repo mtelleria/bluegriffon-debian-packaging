@@ -2,18 +2,18 @@
 <!ENTITY authorName.label "著者名:">
 
 <!ENTITY defaultZoomFactor.label "既定の表示倍率:">
-<!ENTITY zoom.label "の表示倍率">
+<!ENTITY zoom.label "表示倍率">
 
-<!ENTITY editingFeatures.label "Editing features">
-<!ENTITY enableFloatingToolbar.label "Enable Floating Toolbar">
+<!ENTITY editingFeatures.label "編集機能">
+<!ENTITY enableFloatingToolbar.label "フローティング ツールバーを有効にする">
 
-<!ENTITY showComments.label "Show HTML comments">
-<!ENTITY showPHP.label "Show PHP instructions">
-<!ENTITY showPI.label "Show other Processing Instructions">
+<!ENTITY showComments.label "HTML コメントを表示する">
+<!ENTITY showPHP.label "PHP コードを表示する">
+<!ENTITY showPI.label "その他の処理命令を表示する">
 
 
-<!ENTITY linksManagement.label "Copy/paste management of hyperlinks:">
-<!ENTITY preserveRelative.label "Preserve relative URLs">
-<!ENTITY makeAbsolute.label "Make all URLs absolute">
+<!ENTITY linksManagement.label "ハイパーリンクのコピー/貼り付け管理:">
+<!ENTITY preserveRelative.label "相対参照形式の URL を保持する">
+<!ENTITY makeAbsolute.label "絶対参照形式に統一する">
 <!ENTITY returnKey.label "段落の中でリターン キーを押した場合、常に新しい段落を入力する">
-<!ENTITY keepBackup.label "Create a backup before saving a file (*.bak)">
+<!ENTITY keepBackup.label "ファイルの保存前にバックアップ (*.bak) を作成する">

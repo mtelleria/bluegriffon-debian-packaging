@@ -859,6 +859,57 @@ var EditorUtils = {
     return {value: flags, maxColumnPref: maxColumnPref};
 	},
 
+  cleanupBRs: function() {
+    const kNF = Components.interfaces.nsIDOMNodeFilter;
+    const kN  = Components.interfaces.nsIDOMNode;
+
+    function acceptNodeBR(node)
+    {
+      if (node.nodeType == kN.ELEMENT_NODE)
+      {
+        var tagName = node.nodeName.toLowerCase();
+        if (tagName == "br") {
+          var parent = node.parentNode;
+          while (parent 
+                 && parent.ownerDocument.defaultView.getComputedStyle(parent, "").getPropertyValue("display") == "inline") {
+            parent = parent.parentNode;
+          }
+          if (parent
+              && parent.lastChild == node
+              && parent.textContent)
+            return kNF.FILTER_ACCEPT;
+        }
+      }
+      return kNF.FILTER_SKIP;
+    }
+
+    var editor = this.getCurrentEditor();
+    editor.beginTransaction();
+    var theDocument = editor.document;
+    var treeWalker = theDocument.createTreeWalker(theDocument.documentElement,
+                                                  kNF.SHOW_ELEMENT,
+                                                  acceptNodeBR,
+                                                  true);
+    if (treeWalker) {
+      var theNode = treeWalker.nextNode(), tmpNode;
+      while (theNode) {
+        var tagName = theNode.nodeName.toLowerCase();
+        if (tagName == "br") // sanity check
+        {
+          tmpNode = treeWalker.nextNode();
+          editor.deleteNode(theNode);
+
+          theNode = tmpNode;
+        }
+      }
+    }
+    editor.endTransaction();
+  },
+
+  cleanup: function() {
+    this.cleanupBRs();
+  },
+
   get activeViewActive()    { return this.mActiveViewActive; },
   set activeViewActive(val) { this.mActiveViewActive = val; }
 

@@ -25,6 +25,7 @@ _AVAILABLE_LOCALES =\
 		
 libs:: $(_AVAILABLE_LOCALES)
 	cp $(topsrcdir)/bluegriffon/base/jar.mn.in $(topsrcdir)/bluegriffon/base/jar.mn
+	cp $(topsrcdir)/bluegriffon/extensions/op1/jar.mn.in $(topsrcdir)/bluegriffon/extensions/op1/jar.mn
 	cp $(topsrcdir)/bluegriffon/extensions/gfd/jar.mn.in $(topsrcdir)/bluegriffon/extensions/gfd/jar.mn
 	cp $(topsrcdir)/bluegriffon/extensions/fs/jar.mn.in $(topsrcdir)/bluegriffon/extensions/fs/jar.mn
 	cp $(topsrcdir)/bluegriffon/extensions/tipoftheday/jar.mn.in $(topsrcdir)/bluegriffon/extensions/tipoftheday/jar.mn
@@ -34,6 +35,7 @@ libs:: $(_AVAILABLE_LOCALES)
 	cp $(topsrcdir)/bluegriffon/sidebars/domexplorer/jar.mn.in $(topsrcdir)/bluegriffon/sidebars/domexplorer/jar.mn
 	#
 	$(foreach f,$^, rm -fr $(topsrcdir)/bluegriffon/base/locale/`basename $f` ;)
+	$(foreach f,$^, rm -fr $(topsrcdir)/bluegriffon/extensions/op1/locale/`basename $f` ;)
 	$(foreach f,$^, rm -fr $(topsrcdir)/bluegriffon/extensions/gfd/locale/`basename $f` ;)
 	$(foreach f,$^, rm -fr $(topsrcdir)/bluegriffon/extensions/fs/locale/`basename $f` ;)
 	$(foreach f,$^, rm -fr $(topsrcdir)/bluegriffon/extensions/tipoftheday/locale/`basename $f` ;)
@@ -43,6 +45,7 @@ libs:: $(_AVAILABLE_LOCALES)
 	$(foreach f,$^, rm -fr $(topsrcdir)/bluegriffon/sidebars/domexplorer/locale/`basename $f` ;)
 	#
 	$(foreach f,$^, mkdir $(topsrcdir)/bluegriffon/base/locale/`basename $f` ;)
+	$(foreach f,$^, mkdir $(topsrcdir)/bluegriffon/extensions/op1/locale/`basename $f` ;)
 	$(foreach f,$^, mkdir $(topsrcdir)/bluegriffon/extensions/gfd/locale/`basename $f` ;)
 	$(foreach f,$^, mkdir $(topsrcdir)/bluegriffon/extensions/fs/locale/`basename $f` ;)
 	$(foreach f,$^, mkdir $(topsrcdir)/bluegriffon/extensions/tipoftheday/locale/`basename $f` ;)
@@ -53,6 +56,9 @@ libs:: $(_AVAILABLE_LOCALES)
 	#
 	cat $(foreach f,$^,"$f/base.mn") >> $(topsrcdir)/bluegriffon/base/jar.mn
 	$(foreach f,$^, cp -Rf $f/base/locale/* $(topsrcdir)/bluegriffon/base/locale/`basename $f` ;)
+	#
+	cat $(foreach f,$^,"$f/op1.mn") >> $(topsrcdir)/bluegriffon/extensions/op1/jar.mn
+	$(foreach f,$^, cp -Rf $f/extensions/op1/* $(topsrcdir)/bluegriffon/extensions/op1/locale/`basename $f` ;)
 	#
 	cat $(foreach f,$^,"$f/gfd.mn") >> $(topsrcdir)/bluegriffon/extensions/gfd/jar.mn
 	$(foreach f,$^, cp -Rf $f/extensions/gfd/* $(topsrcdir)/bluegriffon/extensions/gfd/locale/`basename $f` ;)

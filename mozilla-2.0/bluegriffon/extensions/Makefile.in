@@ -6,7 +6,7 @@ VPATH		= @srcdir@
 
 include $(DEPTH)/config/autoconf.mk
 
-DIRS += svg-edit gfd fs tipoftheday
+DIRS += svg-edit gfd fs tipoftheday op1
 
 include $(topsrcdir)/config/rules.mk
 

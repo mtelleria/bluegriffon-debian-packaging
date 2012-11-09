@@ -26,10 +26,11 @@ function InitDialog()
 {
   //document.documentElement.getButton("accept").setAttribute("disabled", "true");
 
+  var url;
   if (gNode) {
     gDialog.linkTextbox.hidden = true;
     gDialog.linkLabel.setAttribute("value", gNode.textContent.trim());
-    var url = gNode.getAttribute("href");
+    url = gNode.getAttribute("href");
     gDialog.urlMenulist.value = url;
 
     gDialog.titleTextbox.value = gNode.getAttribute("title");
@@ -79,6 +80,10 @@ function InitDialog()
       gDialog.linkLabel.setAttribute("value", GetSelectionAsText().trim());
       gDialog.urlMenulist.focus();
     }
+
+    url = UrlUtils.getURLFromClipboard();
+    if (url)
+      gDialog.urlMenulist.value = url;
   }
 
   var targets = gEditor.document.querySelectorAll("[id],a[name]");
