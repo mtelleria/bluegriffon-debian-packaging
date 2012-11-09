@@ -1,3 +1,12 @@
+bluegriffon (1.5.2.20121109-1~1.gbpb42c9c) UNRELEASED; urgency=low
+
+  ** SNAPSHOT build @b42c9c6ad150596ffefe49172fb078bf2136e95e **
+
+  * Imported Upstream version 1.5.2.20121109
+  * Removing .gitignore patch
+
+ -- Miguel Telleria de Esteban <miguel@mtelleria.com>  Fri, 09 Nov 2012 14:17:03 +0100
+
 bluegriffon (1.5.2-2) unstable; urgency=low
 
   * Rewriting the source build process in a README.source file
